@@ -139,9 +139,22 @@ int sh( int argc, char **argv, char **envp )
   /* similarly loop through finding all locations of command */
 //} /* where() */
 
-//void list ( char *dir )
-//{
+void list ( char *dir )
+{
+  DIR *givenDir;                                    //using the built in DIR struct
+  givenDir = opendir(dir);                          //givenDir is now the actual dir
+  
+  struct dirent *rawDir;                            //a pointer that will eventually point to every entry in the directory
+  
+  if(givenDir == NULL){
+    printf("Directory %s is invalid", dir);         //if the opened dir is null, then tell the user
+  }else{                                            //otherwise directory is viable
+    while((rawDir = readdir(givenDir)) != NULL){    //I think this will iterate? might be missing the iterative component here
+      printf("%s\n", rawDir);                       //will print out every entry in the dir
+    }
+  }
+  closedir(givenDir);                               //need to close the directory we opened
   /* see man page for opendir() and readdir() and print out filenames for
   the directory passed */
-//} /* list() */
+} /* list() */
 
