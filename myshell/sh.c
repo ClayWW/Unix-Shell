@@ -34,12 +34,13 @@ int sh( int argc, char **argv, char **envp )
   char *prompt = calloc(PROMPTMAX, sizeof(char));
   char *commandline = calloc(MAX_CANON, sizeof(char));
   char *commandlineinput = calloc(MAX_CANON, sizeof(char));
-  char *command, *arg, *commandpath, *p, *pwd, *cwd, *owd;
+  char *command, *arg, *commandpath, *p, *pwd, *cwd;
   char **args = calloc(MAXARGS, sizeof(char*));
   int uid, i, status, argsct, go = 1;
   struct passwd *password_entry;
   char *homedir;
   struct pathelement *pathlist;
+  char *prefix;
 
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
@@ -51,9 +52,8 @@ int sh( int argc, char **argv, char **envp )
     perror("getcwd");
     exit(2);
   }
-  owd = calloc(strlen(pwd) + 1, sizeof(char));
   cwd = calloc(strlen(pwd) + 1, sizeof(char));
-  memcpy(owd, pwd, strlen(pwd));
+  memcpy(cwd, pwd, strlen(pwd));
   prompt[0] = ' '; prompt[1] = '\0';
 
   /* Put PATH into a linked list */
@@ -78,23 +78,136 @@ int sh( int argc, char **argv, char **envp )
     printf("%s>", cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
-    if(len > 0){
+    if(len > 0){                      //**
+      int num_args = 0;               //**
       commandline[len-1] = '\0'; //will never forget to do this again lol
       commandlineinput = (char*)malloc(len);
       strcpy(commandlineinput,commandline);
       int input_length = len;
       int index = 0;
       char *token = strtok(commandlineinput, " ");
-      while(token != NULL){
-        args[index] = token;
+      while(token){ //NEED TO ADD SPECIAL CHARACTERS
+        //breaks up the input into tokens that are stored in the array and then counts how many total arguments we have
+        len = (int) strlen(token);
+        args[num_args] = (char *) malloc(len);
+        strcpy(args[num_args], token);
         token = strtok(NULL, " ");
+        num_args++;
       }
 
       for(int i = 0; i < end_of_list; i++){ //must be struct? (changed to struct but now I have two?)
         if(strcmp(args[0], commands_strings[i]) == 0){
           switch(i){
-            case EXIT:
+            case EXIT: //done
               go = 0;
+              break;
+            case WHICH: //done
+              if(args[1] == NULL){
+                printf("%s", "not enough arguments.\n");
+              }else{
+                for(int i = 1; i < MAXARGS; i++){
+                  if(args[i]){
+                    char *rval = which(args[i],pathlist);
+                    if(rval){
+                      printf("%s\n", rval);
+                      free(rval);
+                    }else{
+                      printf("%s is invalid", args[i]);
+                    }
+                  }else{
+                    break;
+                  }
+                }
+              }
+              break;
+            case WHERE: //done
+              if(args[1] == NULL){
+                printf("%s", "not enough arguments.\n");
+              }else{
+                for(int i = 1; i < MAXARGS; i++){
+                  if(args[i]){
+                    char *rval = where(args[i],pathlist);
+                    if(rval){
+                      printf("%s\n", rval);
+                      free(rval);
+                    }else{
+                      printf("%s is invalid", args[i]);
+                    }
+                  }else{
+                    break;
+                  }
+                }
+              }
+              break;
+            case CD:  //**
+              //args[0] is the cd command
+              //args[1] is the directory
+              //can't be more than two args
+              char *newdirectory = args[1];
+              if(num_args > 2){ //in case of user mess up
+                perror("too many arguments");
+              }else{ //otherwise execute change
+                if(args[1] == NULL){ //if nothing follows the cd command
+                  newdirectory = homedir;
+                }else{ //if a pathway is given
+                  newdirectory = args[1];
+                }
+                //**
+                if(chdir(newdirectory) < 0){
+                    printf("invalid input"); //**
+                }else{
+                    free(cwd);
+                    cwd = malloc((int) strlen(commandlineinput));
+                    strcpy(cwd, newdirectory);
+                }
+              }
+              break;
+            case PWD: //done
+              printf("%s\n", cwd);
+              break;
+            case LIST:
+              if(num_args == 1){
+                list(cwd);
+                break;
+              }else{
+                for(int i = 1; i<MAXARGS; i++){
+                  if(args[i] != NULL){
+                    list(args[i]); //**
+                  }
+                }
+              }
+              break;
+            case PID:
+              int pid = getpid();                                             //**
+              printf("%d\n", pid);
+              break;
+            case KILL: //dude wtf is this
+              if(num_args == 2){
+                char *stringPid = args[1];
+
+              }
+              break;
+            case PROMPT:  //**
+              if(num_args == 1){
+                fgets(commandlineinput, BUFFER_SIZE, stdin);
+                len = (int)strlen(commandlineinput);
+                //alter string in some way?
+                strcpy(prefix, commandlineinput);
+              }else if(num_args == 2){
+                strcpy(prefix, args[1]);
+              }
+              break;
+            case PRINT_ENV: //done
+              printenv(envp, num_args, args);
+              break;
+            case SET_ENV:
+              if(num_args == 1){
+                printenv(num_args, envp ,args);
+              }else if(num_args == 2){
+                setenv(args[1], "", 1);
+              }else if(num_args == 3){
+                setenv(args[1], args[2], 1); //**
+              }
               break;
             default:
               if(NULL){
@@ -134,16 +247,16 @@ char *which(char *command, struct pathelement *pathlist )
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
   char fullpath[BUFFER_SIZE];                                //a large char variable to hold the full path name
 
-  while(currentpath){
-    char *currentpathelement = currentpath->element;
-    givenDir = opendir(currentpathelement);
-    if(givenDir){
-      while((rawDir = readdir(givenDir)) != NULL){
-        if(strcmp(rawDir->d_name, command) == 0){
-          strcpy(fullpath, currentpathelement);
+  while(currentpath){                                         //while the current pathlist still exists (isn't NULL)
+    char *currentpathelement = currentpath->element;          //the element associated with the node at the current path
+    givenDir = opendir(currentpathelement);                   //open the directory that is associated in the element at the current point in the pathlist
+    if(givenDir){                                             //if the given directory at thre current path element is not null
+      while((rawDir = readdir(givenDir)) != NULL){            //while loop that executes so long as the pointer returned in readdir is not returned as NULL
+        if(strcmp(rawDir->d_name, command) == 0){             //if the entry in the directory matches the command we're looking for,
+          strcpy(fullpath, currentpathelement);               //add it to the full path 
           strcat(fullpath, "/");
           strcat(fullpath, rawDir->d_name);
-          closedir(givenDir);
+          closedir(givenDir);                                 //close the directory we're in and returnthe fullpath associated with that command
           return fullpath;                                    //**
         }
       }
@@ -205,4 +318,19 @@ void list ( char *dir )
   /* see man page for opendir() and readdir() and print out filenames for
   the directory passed */
 } /* list() */
+
+void printenv(char **envp, int num_args, char **args){
+    if(num_args == 1){ //in the case of printing all environment varibales
+      int index = 0;
+      while(envp[index]){
+        printf("%s\n", envp[index]);
+        index++;
+      }
+    }else if(num_args == 2){ //in the case of printing a specific variable
+      char *env_var = getenv(args[1]);
+      if(env_var){
+        printf("%s\n", env_var);
+      }
+    }
+}
 
