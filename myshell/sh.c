@@ -159,7 +159,7 @@ int sh( int argc, char **argv, char **envp )
                 }
                 if(newdirectory[0] == '-'){
                   if(chdir(olddir) < 0){
-                    printf("invalid directory");
+                    printf("invalid directory\n");
                   }else{
                     free(cwd);
                     cwd = malloc((int)strlen(olddir));
@@ -170,7 +170,7 @@ int sh( int argc, char **argv, char **envp )
                   }
                 }else{
                   if(chdir(newdirectory) < 0){
-                    printf("invalid directory");
+                    printf("invalid directory\n");
                   }else{
                     free(olddir);
                     olddir = malloc((int)strlen(commandlineinput));
