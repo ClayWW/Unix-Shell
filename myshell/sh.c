@@ -13,7 +13,7 @@
 
 #define BUFFER_SIZE 100 //100 seems like a nice medium number for this
 
-typedef enum commands {
+typedef enum commands { //A blessing from God himself
         EXIT,
         WHICH,
         WHERE,
@@ -30,7 +30,6 @@ typedef enum commands {
 
 int sh( int argc, char **argv, char **envp )
 {
-
   char *prompt = calloc(PROMPTMAX, sizeof(char));
   char *commandline = calloc(MAX_CANON, sizeof(char));
   char *commandlineinput = calloc(MAX_CANON, sizeof(char));
@@ -312,6 +311,7 @@ int sh( int argc, char **argv, char **envp )
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
     clearerr(stdin);
+    signal(SIGINT, ctrlchandler());
   }
   return 0;
 } /* sh() */
@@ -420,4 +420,5 @@ void printenv(char **envp, int num_args, char **args){
     }
 }
 
+void ctrlchanlder(){};
 
