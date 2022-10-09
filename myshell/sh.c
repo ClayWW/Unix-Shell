@@ -28,6 +28,10 @@ typedef enum commands {
         end_of_list
     } commands;
 
+void handle_sigchild(int sig) {
+    while (waitpid((pid_t) (-1), 0, WNOHANG) > 0) {}
+}
+
 int sh( int argc, char **argv, char **envp )
 {
 
@@ -62,7 +66,7 @@ int sh( int argc, char **argv, char **envp )
   sigignore(SIGTERM);
   sigignore(SIGTSTP);
   signal(SIGCHLD, handle_sigchild);
-
+  
   char *commands_strings[] = {
       "exit",
       "which",
@@ -346,7 +350,4 @@ void printenv(char **envp, int num_args, char **args){
     }
 }
 
-void handle_sigchild(int sig) {
-    while (waitpid((pid_t) (-1), 0, WNOHANG) > 0) {}
-}
 
