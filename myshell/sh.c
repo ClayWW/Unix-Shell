@@ -150,6 +150,40 @@ int sh( int argc, char **argv, char **envp )
               //args[0] is the cd command
               //args[1] is the directory
               //can't be more than two args
+              char* newdirectory = args[1];
+              if(num_args > 2){
+                perror("too many arguments\n");
+              }else{
+                if(num_args == 1){
+                  newdirectory = homedir;
+                }
+                if(newdirectory[0] == '-'){
+                  if(chdir(olddir) < 0){
+                    printf("invalid directory");
+                  }else{
+                    free(cwd);
+                    cwd = malloc((int)strlen(olddir));
+                    strcpy(cwd,olddir);
+                    free(olddir);
+                    olddir = malloc((int)strlen(commandlineinput));
+                    strcpy(olddir, commandlineinput);
+                  }
+                }else{
+                  if(chdir(newdirectory) < 0){
+                    printf("invalid directory");
+                  }else{
+                    free(olddir);
+                    olddir = malloc((int)strlen(commandlineinput));
+                    strcpy(olddir, commandlineinput);
+                    free(cwd);
+                    cwd = malloc((int)strlen(commandlineinput));
+                    strcpy(cwd, commandlineinput);
+                  }
+                }
+              }
+
+
+              /*
               char *newdirectory = args[1];
               if(num_args > 2){ //in case of user mess up
                 perror("too many arguments\n");
@@ -180,7 +214,7 @@ int sh( int argc, char **argv, char **envp )
                   }
                 }
 
-
+              */
               /*
                 if(num_args == 2){
                   newdirectory = args[1];
@@ -223,7 +257,6 @@ int sh( int argc, char **argv, char **envp )
                     strcpy(cwd, newdirectory);
                 }
                 */
-              }
               break;
             case PWD: //done
               printf("%s\n", cwd);
