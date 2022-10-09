@@ -154,6 +154,34 @@ int sh( int argc, char **argv, char **envp )
               if(num_args > 2){ //in case of user mess up
                 perror("too many arguments\n");
               }else{ 
+                if(num_args == 1){
+                  newdirectory = homedir;
+                }else if(num_args == 2 && newdirectory[0] == '-'){
+                  if(chdir(olddir) < 0){
+                    printf("invalid directory");
+                  }else{
+                    free(cwd);
+                    cwd = malloc((int)strlen(olddir));
+                    strcpy(cwd,olddir);
+                    free(olddir);
+                    olddir = malloc((int)strlen(commandlineinput));
+                    strcpy(olddir, commandlineinput);
+                  }
+                }else{
+                  if(chdir(newdirectory) < 0){
+                    printf("invalid directory");
+                  }else{
+                    free(olddir);
+                    olddir = malloc((int)strlen(commandlineinput));
+                    strcpy(olddir, commandlineinput);
+                    free(cwd);
+                    cwd = malloc((int)strlen(commandlineinput));
+                    strcpy(cwd, commandlineinput);
+                  }
+                }
+
+
+              /*
                 if(num_args == 2){
                   newdirectory = args[1];
                 }else if(num_args == 1){
@@ -176,7 +204,8 @@ int sh( int argc, char **argv, char **envp )
                   }
                 }
                 
-                
+              */
+             
                 //I feel like this can be done much more simpler
                 /*
                 //otherwise execute change
