@@ -78,6 +78,9 @@ int sh( int argc, char **argv, char **envp )
     printf("%s>", cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
+    if(commandline == NULL){
+      exit(1);
+    }
     if(len >= 2){                      
       int num_args = 0;               //**
       commandline[len-1] = '\0'; //will never forget to do this again lol
