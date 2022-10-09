@@ -28,10 +28,6 @@ typedef enum commands {
         end_of_list
     } commands;
 
-void handle_sigchild(int sig) {
-    while (waitpid((pid_t) (-1), 0, WNOHANG) > 0) {}
-}
-
 int sh( int argc, char **argv, char **envp )
 {
 
@@ -62,10 +58,6 @@ int sh( int argc, char **argv, char **envp )
 
   /* Put PATH into a linked list */
   pathlist = get_path();
-  sigignore(SIGINT);
-  sigignore(SIGTERM);
-  sigignore(SIGTSTP);
-  signal(SIGCHLD, handle_sigchild);
   
   char *commands_strings[] = {
       "exit",
@@ -86,7 +78,7 @@ int sh( int argc, char **argv, char **envp )
     printf("%s>", cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
-    if(len > 1){                      
+    if(len >= 2){                      
       int num_args = 0;               //**
       commandline[len-1] = '\0'; //will never forget to do this again lol
       commandlineinput = (char*)malloc(len);
