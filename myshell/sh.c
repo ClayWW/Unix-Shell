@@ -225,7 +225,7 @@ int sh( int argc, char **argv, char **envp )
                     free(prompt);
                     free(olddir);
                     free(commandline);
-                    pathlist = getpath();
+                    pathlist = get_path();
                   }
                   if(kill(temp, abs(signal)) == -1){
                     perror("Error\n");
