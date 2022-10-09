@@ -81,7 +81,7 @@ int sh( int argc, char **argv, char **envp )
 
   while ( go )
   {
-    printf("%s %s>", prompt, cwd);
+    printf("\n%s %s>", prompt, cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
