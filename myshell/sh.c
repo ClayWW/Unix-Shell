@@ -220,7 +220,7 @@ int sh( int argc, char **argv, char **envp )
                 strcpy(prompt, args[1]);
               }
               break;
-            case PRINT_ENV: //done
+            case PRINT_ENV: //done I think??
               printenv(envp, num_args, args);
               break;
             case SET_ENV:
