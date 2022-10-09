@@ -247,6 +247,7 @@ char *which(char *command, struct pathelement *pathlist )
   DIR *givenDir;                                             //the directory we were given
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
   char fullpath[BUFFER_SIZE];                                //a large char variable to hold the full path name
+  int len;                                                  
 
   while(currentpath){                                         //while the current pathlist still exists (isn't NULL)
     char *currentpathelement = currentpath->element;          //the element associated with the node at the current path
@@ -257,8 +258,10 @@ char *which(char *command, struct pathelement *pathlist )
           strcpy(fullpath, currentpathelement);               //add it to the full path 
           strcat(fullpath, "/");
           strcat(fullpath, rawDir->d_name);
+          len = (int) strlen(fullpath);                       //needs to return a char pointer
+          char *returnpath = (char*)malloc(len);
           closedir(givenDir);                                 //close the directory we're in and returnthe fullpath associated with that command
-          return fullpath;                                    //**
+          return returnpath;                                  
         }
       }
     }
