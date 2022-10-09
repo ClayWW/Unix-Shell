@@ -285,10 +285,10 @@ int sh( int argc, char **argv, char **envp )
               break;
             case PROMPT:  //**
               if(num_args == 1){
-                fgets(commandlineinput, BUFFER_SIZE, stdin);
-                len = (int)strlen(commandlineinput);
+                fgets(commandline, BUFFER_SIZE, stdin);
+                len = (int)strlen(commandline);
                 //alter string in some way?
-                strcpy(prefix, commandlineinput);
+                strcpy(prefix, commandline);
               }else if(num_args == 2){
                 strcpy(prefix, args[1]);
               }
