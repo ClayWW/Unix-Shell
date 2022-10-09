@@ -205,7 +205,7 @@ int sh( int argc, char **argv, char **envp )
 
               }
               break;
-            case PROMPT:  //**
+            case PROMPT:  //done
               if(num_args == 1){
                 printf("Enter Prompt:");
                 if(fgets(pBuffer, BUFFER_SIZE, stdin) != NULL){
