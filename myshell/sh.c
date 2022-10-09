@@ -41,6 +41,7 @@ int sh( int argc, char **argv, char **envp )
   char *homedir;
   struct pathelement *pathlist;
   char *prefix;
+  char *olddir;
 
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
@@ -53,6 +54,11 @@ int sh( int argc, char **argv, char **envp )
   }
   cwd = calloc(strlen(pwd) + 1, sizeof(char));
   memcpy(cwd, pwd, strlen(pwd));
+  prompt[0] = ' '; 
+  prompt[1] = '\0';
+
+  olddir = calloc(strlen(pwd) + 1, sizeof(char));
+  memcpy(olddir, pwd, strlen(pwd));
   prompt[0] = ' '; 
   prompt[1] = '\0';
 
@@ -147,7 +153,33 @@ int sh( int argc, char **argv, char **envp )
               char *newdirectory = args[1];
               if(num_args > 2){ //in case of user mess up
                 perror("too many arguments\n");
-              }else{ //otherwise execute change
+              }else{ 
+                if(num_args == 2){
+                  newdirectory = args[1];
+                }else if(num_args == 1){
+                  newdirectory = homedir;
+                }
+
+                if(args[1][0] == '-'){
+                  if(chdir(olddir) < 0){
+                    printf("invalid directory");
+                  }else{
+                    cwd = olddir;
+                    olddir = commandlineinput;
+                  }
+                }else{
+                  if(chdir(newdirectory) < 0){
+                    printf("invalid directory");
+                  }else{
+                    olddir = cwd;
+                    cwd = commandlineinput;
+                  }
+                }
+                
+                
+                //I feel like this can be done much more simpler
+                /*
+                //otherwise execute change
                 if(args[1] == NULL){ //if nothing follows the cd command
                   newdirectory = homedir;
                 }else{ //if a pathway is given
@@ -161,6 +193,7 @@ int sh( int argc, char **argv, char **envp )
                     cwd = malloc((int) strlen(commandlineinput));
                     strcpy(cwd, newdirectory);
                 }
+                */
               }
               break;
             case PWD: //done
