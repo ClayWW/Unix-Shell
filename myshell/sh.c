@@ -200,9 +200,9 @@ int sh( int argc, char **argv, char **envp )
               printf("%d\n", pid);
               break;
             case KILL: 
-              if(args[1] == NULL){
+              if(args[1] == NULL){ //works
                 printf("No argument for target\n");
-              }else if(args[2] == NULL){
+              }else if(args[2] == NULL){ //works
                 int temp = -1;
                 sscanf(args[1], "%d", &temp);
                 if(temp != -1){
@@ -214,7 +214,7 @@ int sh( int argc, char **argv, char **envp )
                 }else{
                     printf("Invalid PID\n");
                 }
-              }else if(args[3] == NULL){
+              }else if(args[3] == NULL){ //doesn't work :( (works when you type the pid right smh I'm dumb)
                 int temp = -1;
                 int signal = 0; //I'm bouta do what's called a pro gamer move
                 sscanf(args[2], "%d", &temp); //convert both to ints, args[2] is target
