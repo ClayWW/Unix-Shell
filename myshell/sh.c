@@ -34,6 +34,7 @@ int sh( int argc, char **argv, char **envp )
   char *prompt = calloc(PROMPTMAX, sizeof(char));
   char *commandline = calloc(MAX_CANON, sizeof(char));
   char *commandlineinput = calloc(MAX_CANON, sizeof(char));
+  char pBuffer[BUFFER_SIZE];
   char *command, *arg, *commandpath, *p, *pwd, *cwd;
   char **args = calloc(MAXARGS, sizeof(char*));
   int uid, i, status, argsct, go = 1;
@@ -81,7 +82,7 @@ int sh( int argc, char **argv, char **envp )
 
   while ( go )
   {
-    printf("%s>", cwd);
+    printf("%s %s>", prefix, cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
@@ -208,10 +209,10 @@ int sh( int argc, char **argv, char **envp )
             case PROMPT:  //**
               if(num_args == 1){
                 printf("Enter Prompt:");
-                if(fgets(commandlineinput, BUFFER_SIZE, stdin) != NULL){
-                  len = (int)strlen(commandlineinput);
-                  strtok(commandlineinput, " "); //in case of multiple words
-                  strcpy(prefix, commandlineinput);
+                if(fgets(pBuffer, BUFFER_SIZE, stdin) != NULL){
+                  len = (int)strlen(pBuffer);
+                  strtok(pBuffer, " "); //in case of multiple words
+                  strcpy(prefix, pBuffer);
                 }
               }else if(num_args == 2){
                 strcpy(prefix, args[1]);
