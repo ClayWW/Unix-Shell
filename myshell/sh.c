@@ -213,8 +213,8 @@ int sh( int argc, char **argv, char **envp )
                   }
                 }
               }else if(args[3] == NULL){
-                char *temp = -1;
-                char *signal = 0; //I'm bouta do what's called a pro gamer move
+                int temp = -1;
+                int signal = 0; //I'm bouta do what's called a pro gamer move
                 sscanf(args[2], "%d", &temp); //convert both to ints, args[2] is target
                 sscanf(args[1], "%d", &signal); //args[1] is the flag/signal
                 if(temp != -1 && signal < 0){ //the signal starts with -(signal) so it's technically a negative int lol
