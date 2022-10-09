@@ -226,10 +226,28 @@ int sh( int argc, char **argv, char **envp )
             case SET_ENV:
               if(num_args == 1){
                 printenv(envp, num_args ,args);
+              }else if(num_args == 2 && (strcmp(args[1], "PATH") == 0 || strcmp(args[1], "HOME") == 0)){
+                printf("DO NOT SET TO EMPTY\n");
               }else if(num_args == 2){
+                if(setenv(args[1], "", 1) == -1){
+                  perror("Error\n");
+                }else{
                 setenv(args[1], "", 1);
+                }
               }else if(num_args == 3){
-                setenv(args[1], args[2], 1); //**
+                if(setenv(args[1], args[2], 1) == -1){
+                  perror("Error\n");
+                }else{
+                  if(strcmp(args[1], "PATH") == 0){
+                    deletepath(&pathlist);
+                    pathlist = get_path();
+                  }
+                  if(strcmp(args[1], "HOME") == 0){
+                    homedir = args[2];
+                  }
+                }
+              }else{
+                printf("Too many arguments\n");
               }
               break;
             default:
