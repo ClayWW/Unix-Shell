@@ -210,12 +210,11 @@ int sh( int argc, char **argv, char **envp )
                 printf("Enter Prompt:");
                 if(fgets(pBuffer, BUFFER_SIZE, stdin) != NULL){
                   len = (int)strlen(pBuffer);
+                  pBuffer[len-1] = " ";
                   strtok(pBuffer, " "); //in case of multiple words
                   strcpy(prompt, pBuffer);
                 }
               }else if(num_args == 2){
-                len = strlen(args[1]);
-                args[1][len-1] = " ";
                 strcpy(prompt, args[1]);
               }
               break;
