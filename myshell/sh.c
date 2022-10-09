@@ -239,7 +239,6 @@ int sh( int argc, char **argv, char **envp )
                   perror("Error\n");
                 }else{
                   if(strcmp(args[1], "PATH") == 0){
-                    deletepath(&pathlist);
                     pathlist = get_path();
                   }
                   if(strcmp(args[1], "HOME") == 0){
