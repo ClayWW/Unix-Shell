@@ -208,7 +208,7 @@ int sh( int argc, char **argv, char **envp )
             case PROMPT:  //**
               if(num_args == 1){
                 printf("Enter Prompt:");
-                if(fgets(commandlineinput, BUFFER_SIZE, stdin)){
+                if(fgets(commandlineinput, BUFFER_SIZE, stdin) != NULL){
                   len = (int)strlen(commandlineinput);
                   strtok(commandlineinput, " "); //in case of multiple words
                   strcpy(prefix, commandlineinput);
