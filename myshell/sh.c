@@ -83,8 +83,8 @@ int sh( int argc, char **argv, char **envp )
   while ( go )
   {
     printf("\n%s [%s]>", prompt, cwd);
-    signal(SIGINT, ctrlhanlder);
-    signal(SIGTSTP, ctrlhanlder);
+    signal(SIGINT, ctrlhanlder); //ctrl c
+    signal(SIGTSTP, ctrlhanlder); //ctrl z
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
@@ -287,6 +287,20 @@ int sh( int argc, char **argv, char **envp )
               }
               break;
             default:
+              if(which(commandlineinput, pathlist) == NULL){
+                printf("Command not found.\n");
+              }else{
+                char* executePath = which(commandlineinput, pathlist);
+                pid_t pid;
+                if((pid = fork()) < 0){
+                  printf("Error.\n");
+                }else if(pid == 0){
+
+                }else{
+                  waitpid(pid, NULL, 0);
+                }
+              }
+            /*
               if(pid == fork()){
                 waitpid(pid, &status, 0);
               } else{
@@ -294,6 +308,7 @@ int sh( int argc, char **argv, char **envp )
                 fprintf(stderr, "%s: Command not found.\n", args[0]);
                 exit(1); //**?
               }
+              */
           }
 
         }
@@ -314,7 +329,7 @@ int sh( int argc, char **argv, char **envp )
       /* else */
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
-    clearerr(stdin);
+    clearerr(stdin); //ctrl d
   }
   return 0;
 } /* sh() */
