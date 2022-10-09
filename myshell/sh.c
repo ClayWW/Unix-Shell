@@ -28,6 +28,10 @@ typedef enum commands { //A blessing from God himself
         end_of_list
     } commands;
 
+int ctrlchanlder(int sig){
+  return 0;
+};
+
 int sh( int argc, char **argv, char **envp )
 {
   char *prompt = calloc(PROMPTMAX, sizeof(char));
@@ -311,7 +315,7 @@ int sh( int argc, char **argv, char **envp )
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
     clearerr(stdin);
-    sigignore(SIGINT);
+    signal(SIGINT, ctrlchanlder);
   }
   return 0;
 } /* sh() */
@@ -420,4 +424,7 @@ void printenv(char **envp, int num_args, char **args){
     }
 }
 
+int ctrlchanlder(int sig){
+  return 0;
+};
 
