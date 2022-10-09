@@ -260,6 +260,7 @@ char *which(char *command, struct pathelement *pathlist )
           strcat(fullpath, rawDir->d_name);
           len = (int) strlen(fullpath);                       //needs to return a char pointer
           char *returnpath = (char*)malloc(len);
+          strcpy(returnpath, fullpath);
           closedir(givenDir);                                 //close the directory we're in and returnthe fullpath associated with that command
           return returnpath;                                  
         }
@@ -280,6 +281,7 @@ char *where(char *command, struct pathelement *pathlist )
   DIR *givenDir;                                             //the directory we were given
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
   char alllocations[BUFFER_SIZE];                            //a large char variable to hold all of the locations of the command
+  int len;
 
   while(currentpath){                                        //while the current pathlist still exists (isn't NULL)
       char *currentpathelement = currentpath->element;       //the element associated with the node at the current path
@@ -297,8 +299,10 @@ char *where(char *command, struct pathelement *pathlist )
       closedir(givenDir);                                    //close the given directory after use
       currentpath = currentpath->next;                       //move to the next node in the pathlist
   }
-                                                            //**
-  return alllocations;                                      //return all of the locations where command was found
+  len = (int)strlen(alllocations);
+  char *returnlocations = (char*)malloc(len);
+  strcpy(returnlocations, alllocations);
+  return returnlocations;                                      //return all of the locations where command was found
 
   /* similarly loop through finding all locations of command */
 } /* where() */
