@@ -199,18 +199,18 @@ int sh( int argc, char **argv, char **envp )
               int pid = getpid();                                             
               printf("%d\n", pid);
               break;
-            case KILL: //dude wtf is this
+            case KILL: 
               if(args[2] == NULL){
                 int temp = -1;
                 sscanf(args[1], "%d", &temp);
                 if(temp != -1){
                   if(kill(temp, 15) == -1){
                     perror("Error\n");
-                  }else if(kill(temp, 15) != -1){
-                    kill(temp,15);
                   }else{
-                    printf("Invalid PID\n");
+                    kill(temp,15);
                   }
+                }else{
+                    printf("Invalid PID\n");
                 }
               }else if(args[3] == NULL){
                 int temp = -1;
