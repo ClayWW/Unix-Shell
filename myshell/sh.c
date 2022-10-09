@@ -200,9 +200,43 @@ int sh( int argc, char **argv, char **envp )
               printf("%d\n", pid);
               break;
             case KILL: //dude wtf is this
-              if(num_args == 2){
-                char *stringPid = args[1];
-
+              if(args[2] == NULL){
+                int temp = -1;
+                sscanf(args[1], "%d", &temp);
+                if(temp != -1){
+                  if(kill(temp, 15) == -1){
+                    perror("Error\n");
+                  }else if(kill(temp, 15) != -1){
+                    kill(temp,15);
+                  }else{
+                    printf("Invalid PID\n");
+                  }
+                }
+              }else if(args[3] == NULL){
+                char *temp = -1;
+                char *signal = 0; //I'm bouta do what's called a pro gamer move
+                sscanf(args[2], "%d", &temp); //convert both to ints, args[2] is target
+                sscanf(args[1], "%d", &signal); //args[1] is the flag/signal
+                if(temp != -1 && signal < 0){ //the signal starts with -(signal) so it's technically a negative int lol
+                  if(temp == getpid() && signal == -1){ //killing the whole shell
+                    //gotta free everything
+                    free(cwd);
+                    free(pwd);
+                    free(prompt);
+                    free(olddir);
+                    free(commandline);
+                    pathlist = getpath();
+                  }
+                  if(kill(temp, abs(signal)) == -1){
+                    perror("Error\n");
+                  }else{
+                    kill(temp, abs(signal));
+                  }
+                }else{
+                  printf("Invalid arguments\n");
+                }
+              }else{
+                printf("No argument for target\n");
               }
               break;
             case PROMPT:  //done
