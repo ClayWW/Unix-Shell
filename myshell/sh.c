@@ -171,7 +171,7 @@ int sh( int argc, char **argv, char **envp )
                   */
                   free(olddir);
                   olddir = malloc((int)strlen(commandlineinput));
-                  strpy(olddir, cwd);
+                  strcpy(olddir, cwd);
                   free(cwd);
                   cwd = malloc((int)strlen(commandlineinput));
                   strcpy(cwd, commandlineinput);
