@@ -199,7 +199,7 @@ int sh( int argc, char **argv, char **envp )
               int pid = getpid();                                             
               printf("%d\n", pid);
               break;
-            case KILL: 
+            case KILL: //done
               if(args[1] == NULL){ //works
                 printf("No argument for target\n");
               }else if(args[2] == NULL){ //works
@@ -311,6 +311,7 @@ int sh( int argc, char **argv, char **envp )
       /* else */
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
+    clearerr(stdin);
   }
   return 0;
 } /* sh() */
