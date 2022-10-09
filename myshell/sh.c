@@ -424,7 +424,3 @@ void printenv(char **envp, int num_args, char **args){
     }
 }
 
-int ctrlchanlder(int sig){
-  return 0;
-};
-
