@@ -179,43 +179,6 @@ int sh( int argc, char **argv, char **envp )
                   strcpy(cwd, commandlineinput);
                 }
               }
-              /*
-              char* newdirectory = args[1];
-              printf("%s\n", newdirectory);
-              if(num_args > 2){
-                perror("too many arguments\n");
-              }else{
-                if(num_args == 1){
-                  newdirectory = homedir;
-                }else if(num_args == 2){
-                  newdirectory = args[1];
-                }
-                if(newdirectory[0] == '-'){
-                  if(chdir(olddir) < 0){
-                    printf("invalid directory\n");
-                  }else{
-                    free(cwd);
-                    cwd = malloc((int)strlen(olddir));
-                    strcpy(cwd,olddir);
-                    free(olddir);
-                    olddir = malloc((int)strlen(commandlineinput));
-                    strcpy(olddir, commandlineinput);
-                  }
-                }else{
-                  if(chdir(newdirectory) < 0){
-                    printf("invalid directory\n");
-                  }else{
-                    free(olddir);
-                    olddir = malloc((int)strlen(commandlineinput));
-                    strcpy(olddir, commandlineinput);
-                    free(cwd);
-                    cwd = malloc((int)strlen(commandlineinput));
-                    strcpy(cwd, commandlineinput);
-                  }
-                }
-              }
-              */
-              break;
             case PWD: //done
               printf("%s\n", cwd);
               break;
@@ -229,6 +192,7 @@ int sh( int argc, char **argv, char **envp )
                     list(args[i]); //**
                   }
                 }
+                printf("\n");
               }
               break;
             case PID:
