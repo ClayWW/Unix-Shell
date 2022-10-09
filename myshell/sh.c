@@ -44,8 +44,7 @@ int sh( int argc, char **argv, char **envp )
 
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
-  homedir = password_entry->pw_dir;		/* Home directory to start
-						  out with*/
+  homedir = password_entry->pw_dir;		/* Home directory to start out with*/
      
   if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
   {
@@ -54,10 +53,15 @@ int sh( int argc, char **argv, char **envp )
   }
   cwd = calloc(strlen(pwd) + 1, sizeof(char));
   memcpy(cwd, pwd, strlen(pwd));
-  prompt[0] = ' '; prompt[1] = '\0';
+  prompt[0] = ' '; 
+  prompt[1] = '\0';
 
   /* Put PATH into a linked list */
   pathlist = get_path();
+  sigignore(SIGINT);
+  sigignore(SIGTERM);
+  sigignore(SIGTSTP);
+  signal(SIGCHLD, handle_sigchild);
 
   char *commands_strings[] = {
       "exit",
@@ -340,5 +344,9 @@ void printenv(char **envp, int num_args, char **args){
         printf("%s\n", env_var);
       }
     }
+}
+
+void handle_sigchild(int sig) {
+    while (waitpid((pid_t) (-1), 0, WNOHANG) > 0) {}
 }
 
