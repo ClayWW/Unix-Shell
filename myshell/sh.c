@@ -318,7 +318,7 @@ void list ( char *dir )
     printf("Directory %s is invalid", dir);         //if the opened dir is null, then tell the user
   }else{                                            //otherwise directory is viable
     while((rawDir = readdir(givenDir)) != NULL){    //I think this will iterate? might be missing the iterative component here
-      printf("%s\n", rawDir);                       //will print out every entry in the dir
+      printf("%s\n", rawDir->d_name);                       //will print out every entry in the dir
     }
   }
   closedir(givenDir);                               //need to close the directory we opened
