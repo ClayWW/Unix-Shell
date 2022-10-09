@@ -420,5 +420,7 @@ void printenv(char **envp, int num_args, char **args){
     }
 }
 
-void ctrlchanlder(){};
+int ctrlchanlder(){
+  return 0;
+};
 
