@@ -28,9 +28,7 @@ typedef enum commands { //A blessing from God himself
         end_of_list
     } commands;
 
-int ctrlchanlder(int sig){
-  return 0;
-};
+void ctrlchanlder(int sig){};
 
 int sh( int argc, char **argv, char **envp )
 {
@@ -85,6 +83,7 @@ int sh( int argc, char **argv, char **envp )
   while ( go )
   {
     printf("\n%s [%s]>", prompt, cwd);
+    signal(SIGINT, ctrlchanlder);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
@@ -315,7 +314,6 @@ int sh( int argc, char **argv, char **envp )
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
     clearerr(stdin);
-    signal(SIGINT, ctrlchanlder);
   }
   return 0;
 } /* sh() */
