@@ -286,8 +286,10 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-            default:
-              if(which(commandlineinput, pathlist) == NULL){
+
+          }
+        }else{
+          if(which(commandlineinput, pathlist) == NULL){
                 printf("Command not found.\n");
               }else{
                 char* executePath = which(commandlineinput, pathlist);
@@ -300,17 +302,6 @@ int sh( int argc, char **argv, char **envp )
                   waitpid(pid, NULL, 0);
                 }
               }
-            /*
-              if(pid == fork()){
-                waitpid(pid, &status, 0);
-              } else{
-                execve(args[0], args, envp);
-                fprintf(stderr, "%s: Command not found.\n", args[0]);
-                exit(1); //**?
-              }
-              */
-          }
-
         }
       }
     }
