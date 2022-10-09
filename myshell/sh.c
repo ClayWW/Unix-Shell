@@ -182,14 +182,14 @@ int sh( int argc, char **argv, char **envp )
             case PWD: //done
               printf("%s\n", cwd);
               break;
-            case LIST:
+            case LIST: //done
               if(num_args == 1){
                 list(cwd);
                 break;
               }else{
                 for(int i = 1; i<MAXARGS; i++){
                   if(args[i] != NULL){
-                    list(args[i]); //**
+                    list(args[i]); 
                   }
                 }
                 printf("\n");
@@ -333,9 +333,8 @@ void list ( char *dir )
   givenDir = opendir(dir);                          //givenDir is now the actual dir
   
   struct dirent *rawDir;                            //a pointer that will eventually point to every entry in the directory
-  
-  if(givenDir == NULL){
-    printf("Directory %s is invalid", dir);         //if the opened dir is null, then tell the user
+ if(givenDir == NULL){
+    perror("Error\n");         //if the opened dir is null, then tell the user
   }else{                                            //otherwise directory is viable
     while((rawDir = readdir(givenDir)) != NULL){    //I think this will iterate? might be missing the iterative component here
       printf("%s\n", rawDir->d_name);                       //will print out every entry in the dir
