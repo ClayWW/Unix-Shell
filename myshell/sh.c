@@ -146,11 +146,11 @@ int sh( int argc, char **argv, char **envp )
                 }
               }
               break;
-            case CD:  //**
+            case CD:  //done
               //args[0] is the cd command
               //args[1] is the directory
               //can't be more than two args
-
+              //JESUS H CHRIST IT FINALLY WORKS
               if(args[1] == NULL){
                 strcpy(olddir, cwd);
                 strcpy(cwd, homedir);
