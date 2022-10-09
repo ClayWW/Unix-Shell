@@ -81,7 +81,7 @@ int sh( int argc, char **argv, char **envp )
 
   while ( go )
   {
-    printf("\n%s %s>", prompt, cwd);
+    printf("\n%s%s>", prompt, cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
@@ -214,6 +214,8 @@ int sh( int argc, char **argv, char **envp )
                   strcpy(prompt, pBuffer);
                 }
               }else if(num_args == 2){
+                len = strlen(args[1]);
+                args[1][len-1] = " ";
                 strcpy(prompt, args[1]);
               }
               break;
