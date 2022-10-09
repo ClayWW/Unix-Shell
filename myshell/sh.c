@@ -363,6 +363,8 @@ void printenv(char **envp, int num_args, char **args){
       if(env_var){
         printf("%s\n", env_var);
       }
+    }else{
+      printf("Too many arguments");
     }
 }
 
