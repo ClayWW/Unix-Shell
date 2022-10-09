@@ -151,7 +151,7 @@ int sh( int argc, char **argv, char **envp )
               //args[1] is the directory
               //can't be more than two args
               char* newdirectory = args[1];
-              printf("%s\n", args[1]);
+              printf("%s\n", newdirectory);
               if(num_args > 2){
                 perror("too many arguments\n");
               }else{
