@@ -150,6 +150,26 @@ int sh( int argc, char **argv, char **envp )
               //args[0] is the cd command
               //args[1] is the directory
               //can't be more than two args
+
+              if(args[1] == NULL){
+                strcpy(olddir, cwd);
+                strcpy(cwd, homedir);
+                chdir(cwd);
+              }else if(strcmp(args[1],'-') == 0){
+                char temp = cwd;
+                cwd = olddir;
+                olddir = temp;
+                chdir(cwd);
+              }else if(args[1] != NULL && args[2] == NULL){
+                if(chdir(args[1]) < 0){
+                  perror("Invalid Directory");
+                }else{
+                  memset(olddir, '\0', strlen(olddir));
+                  memset(olddir, cwd, strlen(cwd));
+                  getcwd(cwd, PATH_MAX+1);
+                }
+              }
+              /*
               char* newdirectory = args[1];
               printf("%s\n", newdirectory);
               if(num_args > 2){
@@ -184,6 +204,7 @@ int sh( int argc, char **argv, char **envp )
                   }
                 }
               }
+              */
               break;
             case PWD: //done
               printf("%s\n", cwd);
