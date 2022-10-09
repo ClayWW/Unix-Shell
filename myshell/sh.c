@@ -165,19 +165,19 @@ int sh( int argc, char **argv, char **envp )
                     cwd = malloc((int)strlen(olddir));
                     strcpy(cwd,olddir);
                     free(olddir);
-                    olddir = malloc((int)strlen(commandline));
-                    strcpy(olddir, commandline);
+                    olddir = malloc((int)strlen(commandlineinput));
+                    strcpy(olddir, commandlineinput);
                   }
                 }else{
                   if(chdir(newdirectory) < 0){
                     printf("invalid directory\n");
                   }else{
                     free(olddir);
-                    olddir = malloc((int)strlen(commandline));
-                    strcpy(olddir, commandline);
+                    olddir = malloc((int)strlen(commandlineinput));
+                    strcpy(olddir, commandlineinput);
                     free(cwd);
-                    cwd = malloc((int)strlen(commandline));
-                    strcpy(cwd, commandline);
+                    cwd = malloc((int)strlen(commandlineinput));
+                    strcpy(cwd, commandlineinput);
                   }
                 }
               }
@@ -285,10 +285,10 @@ int sh( int argc, char **argv, char **envp )
               break;
             case PROMPT:  //**
               if(num_args == 1){
-                fgets(commandline, BUFFER_SIZE, stdin);
-                len = (int)strlen(commandline);
+                fgets(commandlineinput, BUFFER_SIZE, stdin);
+                len = (int)strlen(commandlineinput);
                 //alter string in some way?
-                strcpy(prefix, commandline);
+                strcpy(prefix, commandlineinput);
               }else if(num_args == 2){
                 strcpy(prefix, args[1]);
               }
