@@ -202,7 +202,7 @@ int sh( int argc, char **argv, char **envp )
               break;
             case SET_ENV:
               if(num_args == 1){
-                printenv(num_args, envp ,args);
+                printenv(envp, num_args ,args);
               }else if(num_args == 2){
                 setenv(args[1], "", 1);
               }else if(num_args == 3){
