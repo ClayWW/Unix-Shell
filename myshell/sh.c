@@ -156,7 +156,7 @@ int sh( int argc, char **argv, char **envp )
                 strcpy(cwd, homedir);
                 chdir(cwd);
               }else if(strcmp(args[1],"-") == 0){
-                char temp = cwd;
+                char *temp = cwd;
                 cwd = olddir;
                 olddir = temp;
                 chdir(cwd);
