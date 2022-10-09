@@ -28,7 +28,7 @@ typedef enum commands { //A blessing from God himself
         end_of_list
     } commands;
 
-void ctrlchanlder(int sig){};
+void ctrlhanlder(int sig){};
 
 int sh( int argc, char **argv, char **envp )
 {
@@ -83,7 +83,8 @@ int sh( int argc, char **argv, char **envp )
   while ( go )
   {
     printf("\n%s [%s]>", prompt, cwd);
-    signal(SIGINT, ctrlchanlder);
+    signal(SIGINT, ctrlhanlder);
+    signal(SIGTSTP, ctrlhanlder);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
