@@ -156,6 +156,8 @@ int sh( int argc, char **argv, char **envp )
               }else{
                 if(num_args == 1){
                   newdirectory = homedir;
+                }else if(num_args == 2){
+                  newdirectory = args[1];
                 }
                 if(newdirectory[0] == '-'){
                   if(chdir(olddir) < 0){
@@ -181,82 +183,6 @@ int sh( int argc, char **argv, char **envp )
                   }
                 }
               }
-
-
-              /*
-              char *newdirectory = args[1];
-              if(num_args > 2){ //in case of user mess up
-                perror("too many arguments\n");
-              }else{ 
-                if(num_args == 1){
-                  newdirectory = homedir;
-                }else if(num_args == 2 && newdirectory[0] == '-'){
-                  if(chdir(olddir) < 0){
-                    printf("invalid directory");
-                  }else{
-                    free(cwd);
-                    cwd = malloc((int)strlen(olddir));
-                    strcpy(cwd,olddir);
-                    free(olddir);
-                    olddir = malloc((int)strlen(commandlineinput));
-                    strcpy(olddir, commandlineinput);
-                  }
-                }else{
-                  if(chdir(newdirectory) < 0){
-                    printf("invalid directory");
-                  }else{
-                    free(olddir);
-                    olddir = malloc((int)strlen(commandlineinput));
-                    strcpy(olddir, commandlineinput);
-                    free(cwd);
-                    cwd = malloc((int)strlen(commandlineinput));
-                    strcpy(cwd, commandlineinput);
-                  }
-                }
-
-              */
-              /*
-                if(num_args == 2){
-                  newdirectory = args[1];
-                }else if(num_args == 1){
-                  newdirectory = homedir;
-                }
-
-                if(args[1][0] == '-'){
-                  if(chdir(olddir) < 0){
-                    printf("invalid directory");
-                  }else{
-                    cwd = olddir;
-                    olddir = commandlineinput;
-                  }
-                }else{
-                  if(chdir(newdirectory) < 0){
-                    printf("invalid directory");
-                  }else{
-                    olddir = cwd;
-                    cwd = commandlineinput;
-                  }
-                }
-                
-              */
-             
-                //I feel like this can be done much more simpler
-                /*
-                //otherwise execute change
-                if(args[1] == NULL){ //if nothing follows the cd command
-                  newdirectory = homedir;
-                }else{ //if a pathway is given
-                  newdirectory = args[1];
-                }
-                //**
-                if(chdir(newdirectory) < 0){
-                    printf("invalid input\n"); //**
-                }else{
-                    free(cwd);
-                    cwd = malloc((int) strlen(commandlineinput));
-                    strcpy(cwd, newdirectory);
-                }
-                */
               break;
             case PWD: //done
               printf("%s\n", cwd);
