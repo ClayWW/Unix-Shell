@@ -146,7 +146,7 @@ int sh( int argc, char **argv, char **envp )
               //can't be more than two args
               char *newdirectory = args[1];
               if(num_args > 2){ //in case of user mess up
-                perror("too many arguments");
+                perror("too many arguments\n");
               }else{ //otherwise execute change
                 if(args[1] == NULL){ //if nothing follows the cd command
                   newdirectory = homedir;
@@ -155,7 +155,7 @@ int sh( int argc, char **argv, char **envp )
                 }
                 //**
                 if(chdir(newdirectory) < 0){
-                    printf("invalid input"); //**
+                    printf("invalid input\n"); //**
                 }else{
                     free(cwd);
                     cwd = malloc((int) strlen(commandlineinput));
