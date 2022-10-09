@@ -78,7 +78,7 @@ int sh( int argc, char **argv, char **envp )
     printf("%s>", cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
-    
+
     if(len >= 2){                      
       int num_args = 0;               //**
       commandline[len-1] = '\0'; //will never forget to do this again lol
@@ -248,7 +248,8 @@ char *which(char *command, struct pathelement *pathlist )
   DIR *givenDir;                                             //the directory we were given
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
   char fullpath[BUFFER_SIZE];                                //a large char variable to hold the full path name
-  int len;                                                  
+  int len;
+  strcpy(fullpath, "");                                                  
 
   while(currentpath){                                         //while the current pathlist still exists (isn't NULL)
     char *currentpathelement = currentpath->element;          //the element associated with the node at the current path
@@ -283,6 +284,7 @@ char *where(char *command, struct pathelement *pathlist )
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
   char alllocations[BUFFER_SIZE];                            //a large char variable to hold all of the locations of the command
   int len;
+  strcpy(alllocations, "");
 
   while(currentpath){                                        //while the current pathlist still exists (isn't NULL)
       char *currentpathelement = currentpath->element;       //the element associated with the node at the current path
