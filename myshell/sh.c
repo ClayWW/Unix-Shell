@@ -200,7 +200,9 @@ int sh( int argc, char **argv, char **envp )
               printf("%d\n", pid);
               break;
             case KILL: 
-              if(args[2] == NULL){
+              if(args[1] == NULL){
+                printf("No argument for target\n");
+              }else if(args[2] == NULL){
                 int temp = -1;
                 sscanf(args[1], "%d", &temp);
                 if(temp != -1){
@@ -235,8 +237,6 @@ int sh( int argc, char **argv, char **envp )
                 }else{
                   printf("Invalid arguments\n");
                 }
-              }else{
-                printf("No argument for target\n");
               }
               break;
             case PROMPT:  //done
