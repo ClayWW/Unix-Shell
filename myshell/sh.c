@@ -155,7 +155,7 @@ int sh( int argc, char **argv, char **envp )
                 strcpy(olddir, cwd);
                 strcpy(cwd, homedir);
                 chdir(cwd);
-              }else if(strcmp(args[1],'-') == 0){
+              }else if(strcmp(args[1],"-") == 0){
                 char temp = cwd;
                 cwd = olddir;
                 olddir = temp;
@@ -164,9 +164,17 @@ int sh( int argc, char **argv, char **envp )
                 if(chdir(args[1]) < 0){
                   perror("Invalid Directory");
                 }else{
+                  /*
                   memset(olddir, '\0', strlen(olddir));
                   memset(olddir, cwd, strlen(cwd));
                   getcwd(cwd, PATH_MAX+1);
+                  */
+                  free(olddir);
+                  olddir = malloc((int)strlen(commandlineinput));
+                  strpy(olddir, cwd);
+                  free(cwd);
+                  cwd = malloc((int)strlen(commandlineinput));
+                  strcpy(cwd, commandlineinput);
                 }
               }
               /*
