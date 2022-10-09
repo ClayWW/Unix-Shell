@@ -78,7 +78,7 @@ int sh( int argc, char **argv, char **envp )
     printf("%s>", cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
-    if(len > 0){                      //**
+    if(len > 1){                      
       int num_args = 0;               //**
       commandline[len-1] = '\0'; //will never forget to do this again lol
       commandlineinput = (char*)malloc(len);
@@ -210,11 +210,12 @@ int sh( int argc, char **argv, char **envp )
               }
               break;
             default:
-              if(NULL){
-                //add execution here
-                break;
+              if(pid == fork()){
+                waitpid(pid, &status, 0);
               } else{
+                execve(args[0], args, envp);
                 fprintf(stderr, "%s: Command not found.\n", args[0]);
+                exit(1); //**?
               }
           }
 
