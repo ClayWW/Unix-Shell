@@ -288,9 +288,11 @@ int sh( int argc, char **argv, char **envp )
               break;
 
           }
+
         }else{
           if(which(commandlineinput, pathlist) == NULL){
                 printf("Command not found.\n");
+                break;
               }else{
                 char* executePath = which(commandlineinput, pathlist);
                 pid_t pid;
