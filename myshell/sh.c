@@ -155,6 +155,8 @@ int sh( int argc, char **argv, char **envp )
                 strcpy(olddir, cwd);
                 strcpy(cwd, homedir);
                 chdir(cwd);
+              }else if(num_args > 2){
+                printf("Too many arguments\n");
               }else if(strcmp(args[1],"-") == 0){
                 char *temp = cwd;
                 cwd = olddir;
