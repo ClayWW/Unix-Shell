@@ -89,7 +89,7 @@ int sh( int argc, char **argv, char **envp )
       int num_args = 0;               //**
       commandline[len-1] = '\0'; //will never forget to do this again lol
       commandlineinput = (char*)malloc(len);
-      strcpy(commandlineinput,commandline);
+      //strcpy(commandlineinput,commandline);
       int input_length = len;
       int index = 0;
       char *token = strtok(commandlineinput, " ");
@@ -165,19 +165,19 @@ int sh( int argc, char **argv, char **envp )
                     cwd = malloc((int)strlen(olddir));
                     strcpy(cwd,olddir);
                     free(olddir);
-                    olddir = malloc((int)strlen(commandlineinput));
-                    strcpy(olddir, commandlineinput);
+                    olddir = malloc((int)strlen(commandline));
+                    strcpy(olddir, commandline);
                   }
                 }else{
                   if(chdir(newdirectory) < 0){
                     printf("invalid directory\n");
                   }else{
                     free(olddir);
-                    olddir = malloc((int)strlen(commandlineinput));
-                    strcpy(olddir, commandlineinput);
+                    olddir = malloc((int)strlen(commandline));
+                    strcpy(olddir, commandline);
                     free(cwd);
-                    cwd = malloc((int)strlen(commandlineinput));
-                    strcpy(cwd, commandlineinput);
+                    cwd = malloc((int)strlen(commandline));
+                    strcpy(cwd, commandline);
                   }
                 }
               }
