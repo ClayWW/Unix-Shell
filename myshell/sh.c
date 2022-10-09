@@ -334,7 +334,7 @@ void list ( char *dir )
   
   struct dirent *rawDir;                            //a pointer that will eventually point to every entry in the directory
  if(givenDir == NULL){
-    perror("Error\n");         //if the opened dir is null, then tell the user
+    printf("End\n");                                //if the opened dir is null, then tell the user
   }else{                                            //otherwise directory is viable
     while((rawDir = readdir(givenDir)) != NULL){    //I think this will iterate? might be missing the iterative component here
       printf("%s\n", rawDir->d_name);                       //will print out every entry in the dir
