@@ -223,7 +223,7 @@ int sh( int argc, char **argv, char **envp )
             case PRINT_ENV: //done I think??
               printenv(envp, num_args, args);
               break;
-            case SET_ENV:
+            case SET_ENV: //also done I think?
               if(num_args == 1){
                 printenv(envp, num_args ,args);
               }else if(num_args == 2 && (strcmp(args[1], "PATH") == 0 || strcmp(args[1], "HOME") == 0)){
