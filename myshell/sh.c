@@ -311,7 +311,7 @@ int sh( int argc, char **argv, char **envp )
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
     clearerr(stdin);
-    signal(SIGINT, ctrlchandler());
+    sigignore(SIGINT);
   }
   return 0;
 } /* sh() */
@@ -420,7 +420,4 @@ void printenv(char **envp, int num_args, char **args){
     }
 }
 
-int ctrlchanlder(){
-  return 0;
-};
 
