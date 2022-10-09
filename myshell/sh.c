@@ -195,8 +195,8 @@ int sh( int argc, char **argv, char **envp )
                 printf("\n");
               }
               break;
-            case PID:
-              int pid = getpid();                                             //**
+            case PID: //done i believe
+              int pid = getpid();                                             
               printf("%d\n", pid);
               break;
             case KILL: //dude wtf is this
@@ -207,10 +207,12 @@ int sh( int argc, char **argv, char **envp )
               break;
             case PROMPT:  //**
               if(num_args == 1){
-                fgets(commandlineinput, BUFFER_SIZE, stdin);
-                len = (int)strlen(commandlineinput);
-                //alter string in some way?
-                strcpy(prefix, commandlineinput);
+                printf("Enter Prompt:");
+                if(fgets(commandlineinput, BUFFER_SIZE, stdin)){
+                  len = (int)strlen(commandlineinput);
+                  strtok(commandlineinput, " "); //in case of multiple words
+                  strcpy(prefix, commandlineinput);
+                }
               }else if(num_args == 2){
                 strcpy(prefix, args[1]);
               }
