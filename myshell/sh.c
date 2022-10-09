@@ -81,7 +81,7 @@ int sh( int argc, char **argv, char **envp )
 
   while ( go )
   {
-    printf("\n%s %s>", prompt, cwd);
+    printf("\n%s [%s]>", prompt, cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
@@ -210,6 +210,9 @@ int sh( int argc, char **argv, char **envp )
                 printf("Enter Prompt:");
                 if(fgets(pBuffer, BUFFER_SIZE, stdin) != NULL){
                   len = (int)strlen(pBuffer);
+                  if(pBuffer[len-1] == '\n'){
+                    pBuffer[len-1] = 0;
+                  }
                   strtok(pBuffer, " "); //in case of multiple words
                   strcpy(prompt, pBuffer);
                 }
