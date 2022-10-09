@@ -79,7 +79,7 @@ int sh( int argc, char **argv, char **envp )
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
     if(commandline == NULL){
-      go = NULL;
+      break;
     }
     if(len >= 2){                      
       int num_args = 0;               //**
