@@ -41,7 +41,6 @@ int sh( int argc, char **argv, char **envp )
   struct passwd *password_entry;
   char *homedir;
   struct pathelement *pathlist;
-  char *prefix;
   char *olddir;
 
   uid = getuid();
@@ -82,7 +81,7 @@ int sh( int argc, char **argv, char **envp )
 
   while ( go )
   {
-    printf("%s %s>", prefix, cwd);
+    printf("%s %s>", prompt, cwd);
     fgets(commandline, BUFFER_SIZE, stdin);
     int len = (int)strlen(commandline);
 
@@ -212,10 +211,10 @@ int sh( int argc, char **argv, char **envp )
                 if(fgets(pBuffer, BUFFER_SIZE, stdin) != NULL){
                   len = (int)strlen(pBuffer);
                   strtok(pBuffer, " "); //in case of multiple words
-                  strcpy(prefix, pBuffer);
+                  strcpy(prompt, pBuffer);
                 }
               }else if(num_args == 2){
-                strcpy(prefix, args[1]);
+                strcpy(prompt, args[1]);
               }
               break;
             case PRINT_ENV: //done
