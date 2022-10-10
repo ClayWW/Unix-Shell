@@ -284,7 +284,7 @@ int sh( int argc, char **argv, char **envp )
 
           }
 
-        }else{ //only can support non-wild cards
+        }else if(i = SET_ENV){ //only can support non-wild cards
           status = 0;
           pid_t pid;
           if((pid = fork()) < 0){
