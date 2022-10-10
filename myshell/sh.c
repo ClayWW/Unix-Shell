@@ -321,7 +321,6 @@ int sh( int argc, char **argv, char **envp )
       }
     }
     clearerr(stdin); //ctrl d
-    free(commandlineinput);
   }
   
   free(prompt);
