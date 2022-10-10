@@ -318,10 +318,8 @@ int sh( int argc, char **argv, char **envp )
   /*
   struct pathelement *tmp;
   struct pathelement *tmp2;
-  struct pathelement *head;
   tmp = pathlist;
-  head = pathlist;
-  free(head->element);
+  free(tmp->element);
   while(tmp){
     tmp2 = tmp->next;
     free(tmp);
