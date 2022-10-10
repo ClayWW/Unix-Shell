@@ -282,8 +282,8 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-            case EXTERNAL:
-            printf("1");
+            default:
+              printf("1");
               status = 0;
               pid_t pid1;
               if((pid1 = fork()) < 0){
