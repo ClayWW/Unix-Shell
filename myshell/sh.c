@@ -307,11 +307,11 @@ int sh( int argc, char **argv, char **envp )
       }
     }
     clearerr(stdin); //ctrl d
+    free(commandlineinput);
   }
   
   free(prompt);
   free(commandline);
-  free(commandlineinput);
   free(commandlineinput);
   i = 0;
   while(args[i]){
