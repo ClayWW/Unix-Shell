@@ -315,21 +315,27 @@ int sh( int argc, char **argv, char **envp )
   free(args);
   free(cwd);
   free(olddir);
-  
-  struct pathelement *tmp;
-  struct pathelement *tmp2;
-  tmp = pathlist;
-  free(tmp->element);
-  while(tmp){
-    tmp2 = tmp->next;
-    free(tmp);
-    tmp = tmp2;
+
+  struct pathelement *head;
+  head = pathlist;
+  free(head->element);
+  while(head){
+    free(head);
+    head = head->next;
   }
+  
   return 0;
 } /* sh() */
 
 char *which(char *command, struct pathelement *pathlist )
 {
+  /*
+  PARAMETERS: char* command - the command we're searching for
+              pathelement *pathlist - 
+  RETURNS: char*, the path at which the command is found
+
+  This function finds the first instance of the command (given the pathlist) in the users files
+  */
   struct pathelement *currentpath = pathlist;                //the current pathlist
   DIR *givenDir;                                             //the directory we were given
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
@@ -363,6 +369,13 @@ char *which(char *command, struct pathelement *pathlist )
 
 char *where(char *command, struct pathelement *pathlist )
 {
+   /*
+  PARAMETERS: char* command - the command we're searching for
+              pathelement *pathlist - the pathlist preceeding the command
+  RETURNS: char*, the path at which the command is found
+
+  This function finds every location of the command (given the pathlist) in the users files
+  */
   struct pathelement *currentpath = pathlist;                //the current pathlist
   DIR *givenDir;                                             //the directory we were given
   struct dirent *rawDir;                                     //the variable that holds the pointer resulting from readdir
@@ -396,6 +409,12 @@ char *where(char *command, struct pathelement *pathlist )
 
 void list ( char *dir )
 {
+  /*
+  PARAMETERS - char* dir, the directory we're listing out
+  RETURNS - None
+
+  This function lists out the files in the given directory
+  */
   DIR *givenDir;                                    //using the built in DIR struct
   givenDir = opendir(dir);                          //givenDir is now the actual dir
   
@@ -413,6 +432,14 @@ void list ( char *dir )
 } /* list() */
 
 void printenv(char **envp, int num_args, char **args){
+  /*
+    PARAMETERS - char **envp - environment variables
+                int num_args - the number of arguments being passed in deciding if we print one or all
+                char **args - the full argument that was inputted into the command line
+    Returns - None
+
+    This function either prints one environmental variable or all of them depending on the number of arguments
+  */
     if(num_args == 1){ //in the case of printing all environment varibales
       int index = 0;
       while(envp[index]){
