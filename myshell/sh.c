@@ -289,7 +289,7 @@ int sh( int argc, char **argv, char **envp )
             perror("Error.\n");
           }else if(pid1 == 0){
             char *execPath = which(commandlineinput, pathlist);
-            if(execPath != NULL){
+            if(!execPath){
               execPath = calloc(BUFFER_SIZE, sizeof(char));
               strcpy(execPath, commandlineinput);
             }else{
