@@ -281,30 +281,32 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-
-          }
-
-        }
-        if(i = SET_ENV){ //only can support non-wild cards
-          status = 0;
-          pid_t pid;
-          if((pid = fork()) < 0){
-            perror("Error.\n");
-          }else if(pid == 0){
-            char *execPath = which(commandlineinput, pathlist);
-            if(execPath != NULL){
-              execPath = calloc(BUFFER_SIZE, sizeof(char));
-              strcpy(execPath, commandlineinput);
-            }else{
-              execve(execPath, args, environ);
-              free(execPath);
-              printf("Command not found.\n");
+            default:
+              status = 0;
+              pid_t pid;
+              if((pid = fork()) < 0){
+                perror("Error.\n");
+              }else if(pid == 0){
+                char *execPath = which(commandlineinput, pathlist);
+                if(execPath != NULL){
+                  execPath = calloc(BUFFER_SIZE, sizeof(char));
+                  strcpy(execPath, commandlineinput);
+                }else{
+                  execve(execPath, args, environ);
+                  free(execPath);
+                  if(i+1 == end_of_list){
+                    printf("Command not found.\n");
+                  }
+                  break;
+                }
+              }else{
+                status = 0;
+                waitpid(pid, &status, 0);
+              }
               break;
-            }
-          }else{
-            status = 0;
-            waitpid(pid, &status, 0);
+
           }
+
         }
           /*
           if((commandlineinput[0] == '/') | ((commandlineinput[0] == '.') & (commandlineinput[1] == '/')) | ((commandlineinput[1] == '.') & (commandlineinput[2] == '/'))){
