@@ -32,6 +32,7 @@ void ctrlhanlder(int sig){};
 
 int sh( int argc, char **argv, char **envp )
 {
+  extern char **environ; //new addition because Google said so
   char *prompt = calloc(PROMPTMAX, sizeof(char));
   char *commandline = calloc(MAX_CANON, sizeof(char));
   char *commandlineinput = calloc(MAX_CANON, sizeof(char));
@@ -169,11 +170,6 @@ int sh( int argc, char **argv, char **envp )
                 if(chdir(args[1]) < 0){
                   perror("Invalid Directory");
                 }else{
-                  /*
-                  memset(olddir, '\0', strlen(olddir));
-                  memset(olddir, cwd, strlen(cwd));
-                  getcwd(cwd, PATH_MAX+1);
-                  */
                   free(olddir);
                   olddir = malloc((int)strlen(commandlineinput));
                   strcpy(olddir, cwd);
@@ -289,11 +285,36 @@ int sh( int argc, char **argv, char **envp )
 
           }
 
-        }else{
+        }else{ //only can support non-wild cards
+          status = 0;
+          pid_t pid;
+          if((pid = fork()) < 0){
+            perror("Error.\n");
+          }else if(pid == 0){
+            char *execPath = which(commandlineinput, pathlist);
+            if(execPath != NULL){
+              execPath = calloc(BUFFER_SIZE, sizeof(char));
+              strcpy(execPath, commandlineinput);
+            }else{
+              execve(execPath, args, environ);
+              free(execPath);
+              printf("Command not found.\n");
+              exit(-1);
+            }
+          }else{
+            status = 0;
+            waitpid(pid, &status, 0);
+          }
+
+          /*
+          if((commandlineinput[0] == '/') | ((commandlineinput[0] == '.') & (commandlineinput[1] == '/')) | ((commandlineinput[1] == '.') & (commandlineinput[2] == '/'))){
+            //absolute path
+
+          }
           if(which(commandlineinput, pathlist) == NULL){
                 printf("Command not found.\n");
                 break;
-              }else{
+          }else{
                 char* executePath = which(commandlineinput, pathlist);
                 pid_t pid;
                 if((pid = fork()) < 0){
@@ -303,7 +324,8 @@ int sh( int argc, char **argv, char **envp )
                 }else{
                   waitpid(pid, NULL, 0);
                 }
-              }
+          }
+        */
         }
       }
     }
