@@ -328,7 +328,6 @@ int sh( int argc, char **argv, char **envp )
     free(head);
     head = head->next;
   }
-  free(pathlist);
 
   return 0;
 } /* sh() */
