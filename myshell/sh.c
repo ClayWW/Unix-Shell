@@ -281,6 +281,8 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
+            default:
+              break;
           }
 
         }else{
