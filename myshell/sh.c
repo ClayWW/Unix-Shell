@@ -299,7 +299,7 @@ int sh( int argc, char **argv, char **envp )
               execve(execPath, args, environ);
               free(execPath);
               printf("Command not found.\n");
-              exit(-1);
+              break;
             }
           }else{
             status = 0;
