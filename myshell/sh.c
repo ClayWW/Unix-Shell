@@ -25,6 +25,7 @@ typedef enum commands { //A blessing from God himself
         PROMPT,
         PRINT_ENV, 
         SET_ENV,
+        EXTERNAL,
         end_of_list
     } commands;
 
@@ -281,7 +282,7 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-            default:
+            case EXTERNAL:
             printf("1");
               status = 0;
               pid_t pid1;
