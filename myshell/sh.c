@@ -105,9 +105,8 @@ int sh( int argc, char **argv, char **envp )
         token = strtok(NULL, " ");
         num_args++;
       }
-
       for(int i = 0; i < end_of_list; i++){ //must be struct? (changed to struct but now I have two?)
-        if(strcmp(args[0], commands_strings[i]) == 0){
+        //if(strcmp(args[0], commands_strings[i]) == 0){
           switch(i){
             case EXIT: //done
               go = 0;
@@ -282,29 +281,31 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-
-          }
-
-        }else{ //only can support non-wild cards
-          status = 0;
-          pid_t pid;
-          if((pid = fork()) < 0){
-            perror("Error.\n");
-          }else if(pid == 0){
-            char *execPath = which(commandlineinput, pathlist);
-            if(execPath != NULL){
-              execPath = calloc(BUFFER_SIZE, sizeof(char));
-              strcpy(execPath, commandlineinput);
-            }else{
-              execve(execPath, args, environ);
-              free(execPath);
-              printf("Command not found.\n");
+            default:
+              status = 0;
+              pid_t pid;
+              if((pid = fork()) < 0){
+                perror("Error.\n");
+              }else if(pid == 0){
+                char *execPath = which(commandlineinput, pathlist);
+                if(execPath != NULL){
+                  execPath = calloc(BUFFER_SIZE, sizeof(char));
+                  strcpy(execPath, commandlineinput);
+                }else{
+                  execve(execPath, args, environ);
+                  free(execPath);
+                  printf("Command not found.\n");
+                  break;
+              }
+              }else{
+                status = 0;
+              waitpid(pid, &status, 0);
+              }
               break;
-            }
-          }else{
-            status = 0;
-            waitpid(pid, &status, 0);
+
           }
+
+        //}else{ //only can support non-wild cards
 
           /*
           if((commandlineinput[0] == '/') | ((commandlineinput[0] == '.') & (commandlineinput[1] == '/')) | ((commandlineinput[1] == '.') & (commandlineinput[2] == '/'))){
@@ -328,6 +329,7 @@ int sh( int argc, char **argv, char **envp )
         */
         }
       }
+      clearerr(stdin); //ctrl d
     }
 
     /* print your prompt */
@@ -337,17 +339,16 @@ int sh( int argc, char **argv, char **envp )
     /* check for each built in command and implement */
 
      /*  else  program to exec */
-    {
+    
        /* find it */
        /* do fork(), execve() and waitpid() */
 
       /* else */
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
-    }
-    clearerr(stdin); //ctrl d
+
+    return 0;
   }
-  return 0;
-} /* sh() */
+ /* sh() */
 
 char *which(char *command, struct pathelement *pathlist )
 {
