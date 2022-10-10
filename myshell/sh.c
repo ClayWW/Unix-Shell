@@ -35,7 +35,7 @@ int sh( int argc, char **argv, char **envp )
   extern char **environ; //new addition because Google said so
   char *prompt = calloc(PROMPTMAX, sizeof(char));
   char *commandline = calloc(MAX_CANON, sizeof(char));
-  char *commandlineinput = calloc(MAX_CANON, sizeof(char));
+  char *commandlineinput = calloc(MAX_CANON, sizeof(char)); //LEAK
   char pBuffer[BUFFER_SIZE];
   char *command, *arg, *commandpath, *p, *pwd, *cwd;
   char **args = calloc(MAXARGS, sizeof(char*));
@@ -100,7 +100,7 @@ int sh( int argc, char **argv, char **envp )
       while(token){ //NEED TO ADD SPECIAL CHARACTERS
         //breaks up the input into tokens that are stored in the array and then counts how many total arguments we have
         len = (int) strlen(token);
-        args[num_args] = (char *) malloc(len);
+        args[num_args] = (char *) malloc(len); //LEAK
         strcpy(args[num_args], token);
         token = strtok(NULL, " ");
         num_args++;
@@ -228,7 +228,7 @@ int sh( int argc, char **argv, char **envp )
                     free(commandline);
                     free(commandlineinput);
                     i = 0;
-                    while(args[i]){
+                    while(i < MAXARGS){
                       free(args[i]);
                       i++;
                     }
@@ -329,7 +329,7 @@ int sh( int argc, char **argv, char **envp )
   free(commandline);
   free(commandlineinput);
   i = 0;
-  while(args[i]){
+  while(i < MAXARGS){
     free(args[i]);
     i++;
   }
