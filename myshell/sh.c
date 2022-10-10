@@ -303,40 +303,30 @@ int sh( int argc, char **argv, char **envp )
     }
     clearerr(stdin); //ctrl d
   }
-  printf("1");
+  
   free(prompt);
-  printf("1");
   free(commandline);
-  printf("1");
   free(commandlineinput);
-  printf("1");
   i = 0;
   while(i < MAXARGS){
     free(args[i]);
     i++;
   }
-  printf("1");
   free(args);
-  printf("1");
   free(cwd);
-  printf("1");
   free(olddir);
-  printf("1");
   free(pwd);
   struct pathelement *tmp;
   struct pathelement *tmp2;
   struct pathelement *head;
-  printf("1");
   tmp = pathlist;
   head = pathlist;
-  printf("1");
   free(head->element);
   while(tmp){
     tmp2 = tmp->next;
     free(tmp);
     tmp = tmp2;
   }
-  printf("1");
 
   return 0;
 } /* sh() */
