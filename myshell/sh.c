@@ -282,7 +282,7 @@ int sh( int argc, char **argv, char **envp )
               }
               break;
           }
-        }else if(i = SET_ENV){
+        }else if((args[0] != "exit") && (args[0] != "which") && (args[0] != "where") && (args[0] != "cd") && (args[0] != "pwd") && (args[0] != "list") && (args[0] != "kill") && (args[0] != "pid") && (args[0] != "prompt") && (args[0] != "printenv") && (args[0] != "setenv")){
           status = 0;
           pid_t pid1;
           if((pid1 = fork()) < 0){
