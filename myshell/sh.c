@@ -281,36 +281,29 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-            default:
-            printf("1");
-              status = 0;
-              pid_t pid1;
-              if((pid1 = fork()) < 0){
-                perror("Error.\n");
-                printf("2");
-              }else if(pid1 == 0){
-                char *execPath = which(commandlineinput, pathlist);
-                printf("3");
-                if(execPath != NULL){
-                  execPath = calloc(BUFFER_SIZE, sizeof(char));
-                  strcpy(execPath, commandlineinput);
-                  printf("4");
-                }else{
-                  execve(execPath, args, environ);
-                  free(execPath);
-                  printf("Command not found.\n");
-                  break;
-                }
-              }else{
-                printf("5");
-                status = 0;
-                waitpid(pid1, &status, 0);
-              }
-              printf("6");
-              break;
-
           }
 
+        }else{
+          status = 0;
+          pid_t pid1;
+          if((pid1 = fork()) < 0){
+            perror("Error.\n");
+          }else if(pid1 == 0){
+           char *execPath = which(commandlineinput, pathlist);
+            if(execPath != NULL){
+               execPath = calloc(BUFFER_SIZE, sizeof(char));
+               strcpy(execPath, commandlineinput);
+            }else{
+              execve(execPath, args, environ);
+              free(execPath);                
+              printf("Command not found.\n");
+              break;
+            }
+          }else{
+            status = 0;
+            waitpid(pid1, &status, 0);
+          }
+          break;
         }
           /*
           if((commandlineinput[0] == '/') | ((commandlineinput[0] == '.') & (commandlineinput[1] == '/')) | ((commandlineinput[1] == '.') & (commandlineinput[2] == '/'))){
