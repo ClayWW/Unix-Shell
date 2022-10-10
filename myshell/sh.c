@@ -303,7 +303,7 @@ int sh( int argc, char **argv, char **envp )
     }
     clearerr(stdin); //ctrl d
   }
-  /*
+  
   free(prompt);
   free(commandline);
   free(commandlineinput);
@@ -314,7 +314,7 @@ int sh( int argc, char **argv, char **envp )
   }
   free(args);
   free(cwd);
-  */
+  /*
   free(olddir);
   struct pathelement *tmp;
   struct pathelement *tmp2;
@@ -327,7 +327,7 @@ int sh( int argc, char **argv, char **envp )
     free(tmp);
     tmp = tmp2;
   }
-
+  */
   return 0;
 } /* sh() */
 
