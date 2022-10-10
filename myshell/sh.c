@@ -110,7 +110,6 @@ int sh( int argc, char **argv, char **envp )
           switch(i){
             case EXIT: //done
               go = 0;
-              free(commandlineinput);
               break;
             case WHICH: //done
               if(args[1] == NULL){
