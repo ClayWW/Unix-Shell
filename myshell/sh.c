@@ -309,11 +309,11 @@ int sh( int argc, char **argv, char **envp )
     clearerr(stdin); //ctrl d
   }
   
-  free(environ);
+  //free(environ);
   free(prompt);
-  free(commandline);
+  //free(commandline);
   free(commandlineinput);
-  free(args);
+  //free(args);
   
   return 0;
 } /* sh() */
