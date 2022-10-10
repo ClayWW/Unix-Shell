@@ -282,15 +282,19 @@ int sh( int argc, char **argv, char **envp )
               }
               break;
             default:
+            printf("1");
               status = 0;
               pid_t pid1;
               if((pid1 = fork()) < 0){
                 perror("Error.\n");
+                printf("2");
               }else if(pid1 == 0){
                 char *execPath = which(commandlineinput, pathlist);
+                printf("3");
                 if(execPath != NULL){
                   execPath = calloc(BUFFER_SIZE, sizeof(char));
                   strcpy(execPath, commandlineinput);
+                  printf("4");
                 }else{
                   execve(execPath, args, environ);
                   free(execPath);
@@ -298,9 +302,11 @@ int sh( int argc, char **argv, char **envp )
                   break;
                 }
               }else{
+                printf("5");
                 status = 0;
                 waitpid(pid1, &status, 0);
               }
+              printf("6");
               break;
 
           }
