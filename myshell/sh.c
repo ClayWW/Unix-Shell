@@ -220,6 +220,7 @@ int sh( int argc, char **argv, char **envp )
                 if(temp != -1 && signal < 0){ //the signal starts with -(signal) so it's technically a negative int lol
                   if(temp == getpid() && signal == -1){ //killing the whole shell
                     //gotta free everything
+                    /*
                     free(cwd);
                     free(pwd);
                     free(prompt);
@@ -239,6 +240,7 @@ int sh( int argc, char **argv, char **envp )
                         free(head);
                         head = head->next;
                       }
+                      */
                     pathlist = get_path();
                   }
                   if(kill(temp, abs(signal)) == -1){
