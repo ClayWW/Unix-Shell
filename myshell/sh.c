@@ -370,9 +370,6 @@ char *which(char *command, struct pathelement *pathlist )
           char *returnpath = (char*)malloc(len);
           strcpy(returnpath, fullpath);
           closedir(givenDir);                                 //close the directory we're in and returnthe fullpath associated with that command
-          free(givenDir);
-          free(rawDir);
-          free(currentpathelement);
           return returnpath;                                  
         }
       }
@@ -380,10 +377,6 @@ char *which(char *command, struct pathelement *pathlist )
     closedir(givenDir);
     currentpath = currentpath->next;
   }
-
-  free(givenDir);
-  free(rawDir);
-  free(currentpath);
 
   return(NULL);
 } /* which() */
@@ -417,8 +410,6 @@ char *where(char *command, struct pathelement *pathlist )
   char *returnlocations = (char*)malloc(len);
   strcpy(returnlocations, alllocations);
 
-  free(givenDir);
-  free(rawDir);
   return returnlocations;                                      //return all of the locations where command was found
 
 } /* where() */
@@ -438,8 +429,6 @@ void list ( char *dir )
   }
 
   closedir(givenDir);                               //need to close the directory we opened
-  free(givenDir);
-  free(rawDir);
 
 } /* list() */
 
