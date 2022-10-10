@@ -312,8 +312,16 @@ int sh( int argc, char **argv, char **envp )
   free(prompt);
   free(commandline);
   free(commandlineinput);
-  free(args);
-  
+  int i = 0;
+  while(args[i]){
+    free(args[i]);
+    i++;
+  }
+  free(cwd);
+  free(olddir);
+  free(pathlist);
+  free(pwd);
+
   return 0;
 } /* sh() */
 
