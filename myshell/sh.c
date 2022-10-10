@@ -294,9 +294,7 @@ int sh( int argc, char **argv, char **envp )
                 }else{
                   execve(execPath, args, environ);
                   free(execPath);
-                  if(i+1 == end_of_list){
-                    printf("Command not found.\n");
-                  }
+                  printf("Command not found.\n");
                   break;
                 }
               }else{
