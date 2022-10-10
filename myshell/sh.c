@@ -25,7 +25,6 @@ typedef enum commands { //A blessing from God himself
         PROMPT,
         PRINT_ENV, 
         SET_ENV,
-        EXTERNAL,
         end_of_list
     } commands;
 
@@ -79,8 +78,7 @@ int sh( int argc, char **argv, char **envp )
       "kill",
       "prompt",
       "printenv",
-      "setenv",
-      "external"
+      "setenv"
   };
 
   while ( go )
@@ -283,27 +281,30 @@ int sh( int argc, char **argv, char **envp )
                 printf("Too many arguments\n");
               }
               break;
-            case EXTERNAL:
-              status = 0;
-              pid_t pid1;
-              if((pid1 = fork()) < 0){
-                perror("Error.\n");
-              }else if(pid1 == 0){
-                char *execPath = which(commandlineinput, pathlist);
-                if(execPath != NULL){
-                  execPath = calloc(BUFFER_SIZE, sizeof(char));
-                  strcpy(execPath, commandlineinput);
-                }else{
-                  execve(execPath, args, environ);
-                  free(execPath);                
-                  printf("Command not found.\n");
-                  break;
-                }
-              }else{
+            default:
+              if(i = SET_ENV){
                 status = 0;
-                waitpid(pid1, &status, 0);
-              }
-          break;
+                pid_t pid1;
+                if((pid1 = fork()) < 0){
+                  perror("Error.\n");
+                }else if(pid1 == 0){
+                  char *execPath = which(commandlineinput, pathlist);
+                  if(execPath != NULL){
+                    execPath = calloc(BUFFER_SIZE, sizeof(char));
+                    strcpy(execPath, commandlineinput);
+                  }else{
+                    execve(execPath, args, environ);
+                    free(execPath);                
+                    printf("Command not found.\n");
+                    break;
+                  }
+                }else{
+                  status = 0;
+                  waitpid(pid1, &status, 0);
+                }
+             }
+            break;
+
 
           }
 
