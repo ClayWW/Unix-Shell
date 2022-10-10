@@ -315,15 +315,8 @@ int sh( int argc, char **argv, char **envp )
   free(args);
   free(cwd);
   free(olddir);
-
-  struct pathelement *head;
-  head = pathlist;
+  struct pathelement *head = pathlist;
   free(head->element);
-  while(head){
-    free(head);
-    head = head->next;
-  }
-  
   return 0;
 } /* sh() */
 
