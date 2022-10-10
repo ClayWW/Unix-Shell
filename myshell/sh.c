@@ -97,7 +97,7 @@ int sh( int argc, char **argv, char **envp )
       int input_length = len;
       int index = 0;
       char *token = strtok(commandlineinput, " ");
-      while(token){ //NEED TO ADD SPECIAL CHARACTERS
+      while(token){ 
         //breaks up the input into tokens that are stored in the array and then counts how many total arguments we have
         len = (int) strlen(token);
         args[num_args] = (char *) malloc(len); //LEAK
@@ -380,11 +380,11 @@ char *which(char *command, struct pathelement *pathlist )
     closedir(givenDir);
     currentpath = currentpath->next;
   }
-  /*
+
   free(givenDir);
   free(rawDir);
   free(currentpath);
-  */
+
   return(NULL);
 } /* which() */
 
@@ -416,10 +416,9 @@ char *where(char *command, struct pathelement *pathlist )
   len = (int)strlen(alllocations);
   char *returnlocations = (char*)malloc(len);
   strcpy(returnlocations, alllocations);
-  /*
+
   free(givenDir);
   free(rawDir);
-  */
   return returnlocations;                                      //return all of the locations where command was found
 
 } /* where() */
@@ -437,11 +436,10 @@ void list ( char *dir )
       printf("%s\n", rawDir->d_name);                       //will print out every entry in the dir
     }
   }
-  /*
+
   closedir(givenDir);                               //need to close the directory we opened
   free(givenDir);
   free(rawDir);
-  */
 
 } /* list() */
 
