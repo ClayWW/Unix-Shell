@@ -283,10 +283,10 @@ int sh( int argc, char **argv, char **envp )
               break;
             default:
               status = 0;
-              pid_t pid;
-              if((pid = fork()) < 0){
+              pid_t pid1;
+              if((pid1 = fork()) < 0){
                 perror("Error.\n");
-              }else if(pid == 0){
+              }else if(pid1 == 0){
                 char *execPath = which(commandlineinput, pathlist);
                 if(execPath != NULL){
                   execPath = calloc(BUFFER_SIZE, sizeof(char));
@@ -301,7 +301,7 @@ int sh( int argc, char **argv, char **envp )
                 }
               }else{
                 status = 0;
-                waitpid(pid, &status, 0);
+                waitpid(pid1, &status, 0);
               }
               break;
 
