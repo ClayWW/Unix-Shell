@@ -317,6 +317,7 @@ int sh( int argc, char **argv, char **envp )
     free(args[i]);
     i++;
   }
+  free(args);
   free(cwd);
   free(olddir);
   free(pathlist);
