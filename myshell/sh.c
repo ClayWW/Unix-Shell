@@ -284,7 +284,8 @@ int sh( int argc, char **argv, char **envp )
 
           }
 
-        }else if(i = SET_ENV && (strcmp(args[0], commands_strings[i]) != 0)){ //only can support non-wild cards
+        }
+        if(i = SET_ENV){ //only can support non-wild cards
           status = 0;
           pid_t pid;
           if((pid = fork()) < 0){
