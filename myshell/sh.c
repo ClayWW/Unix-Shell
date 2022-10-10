@@ -324,7 +324,7 @@ int sh( int argc, char **argv, char **envp )
     }
     clearerr(stdin); //ctrl d
   }
-  
+  /*
   free(prompt);
   free(commandline);
   free(commandlineinput);
@@ -344,7 +344,7 @@ int sh( int argc, char **argv, char **envp )
     free(head);
     head = head->next;
   }
-  
+  */
   return 0;
 } /* sh() */
 
