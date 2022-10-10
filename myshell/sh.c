@@ -221,25 +221,11 @@ int sh( int argc, char **argv, char **envp )
                   if(temp == getpid() && signal == -1){ //killing the whole shell
                     //gotta free everything
                     
-                    free(cwd);
-                    free(pwd);
-                    free(prompt);
-                    free(olddir);
-                    free(commandline);
-                    free(commandlineinput);
-                    i = 0;
-                    while(i < MAXARGS){
-                      free(args[i]);
-                      i++;
-                    }
-                     free(args);
-                      struct pathelement *head;
-                      head = pathlist;
-                      free(head->element);
-                      while(head != NULL){
-                        free(head);
-                        head = head->next;
-                      }
+                    free(cwd);  
+		                free(olddir);
+		                free(prompt);  
+		                free(args);
+		                free(commandline);
                       
                     pathlist = get_path();
                   }
@@ -324,7 +310,7 @@ int sh( int argc, char **argv, char **envp )
     }
     clearerr(stdin); //ctrl d
   }
-  /*
+  
   free(prompt);
   free(commandline);
   free(commandlineinput);
@@ -344,7 +330,7 @@ int sh( int argc, char **argv, char **envp )
     free(head);
     head = head->next;
   }
-  */
+
   return 0;
 } /* sh() */
 
