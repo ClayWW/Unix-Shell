@@ -320,8 +320,15 @@ int sh( int argc, char **argv, char **envp )
   free(args);
   free(cwd);
   free(olddir);
-  free(pathlist);
   free(pwd);
+  struct pathelement *head;
+  head = pathlist;
+  free(head->element);
+  while(head != NULL){
+    free(head);
+    head = head->next;
+  }
+  free(pathlist);
 
   return 0;
 } /* sh() */
