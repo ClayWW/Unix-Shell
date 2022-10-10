@@ -316,7 +316,6 @@ int sh( int argc, char **argv, char **envp )
   free(cwd);
   */
   free(olddir);
-  free(pwd);
   struct pathelement *tmp;
   struct pathelement *tmp2;
   struct pathelement *head;
