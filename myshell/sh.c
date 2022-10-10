@@ -315,7 +315,7 @@ int sh( int argc, char **argv, char **envp )
   free(args);
   free(cwd);
   free(olddir);
-  /*
+  
   struct pathelement *tmp;
   struct pathelement *tmp2;
   tmp = pathlist;
@@ -325,7 +325,6 @@ int sh( int argc, char **argv, char **envp )
     free(tmp);
     tmp = tmp2;
   }
-  */
   return 0;
 } /* sh() */
 
