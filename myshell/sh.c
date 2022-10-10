@@ -304,45 +304,15 @@ int sh( int argc, char **argv, char **envp )
           }
           break;
         }
-          /*
-          if((commandlineinput[0] == '/') | ((commandlineinput[0] == '.') & (commandlineinput[1] == '/')) | ((commandlineinput[1] == '.') & (commandlineinput[2] == '/'))){
-            //absolute path
-
-          }
-          if(which(commandlineinput, pathlist) == NULL){
-                printf("Command not found.\n");
-                break;
-          }else{
-                char* executePath = which(commandlineinput, pathlist);
-                pid_t pid;
-                if((pid = fork()) < 0){
-                  printf("Error.\n");
-                }else if(pid == 0){
-
-                }else{
-                  waitpid(pid, NULL, 0);
-                }
-          }
-        */
       }
-    }
-
-    /* print your prompt */
-
-    /* get command line and process */
-
-    /* check for each built in command and implement */
-
-     /*  else  program to exec */
-    {
-       /* find it */
-       /* do fork(), execve() and waitpid() */
-
-      /* else */
-        /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
     }
     clearerr(stdin); //ctrl d
   }
+  free(environ);
+  free(prompt);
+  free(commandline);
+  free(commandlineinput);
+  free(args);
   return 0;
 } /* sh() */
 
@@ -368,6 +338,9 @@ char *which(char *command, struct pathelement *pathlist )
           char *returnpath = (char*)malloc(len);
           strcpy(returnpath, fullpath);
           closedir(givenDir);                                 //close the directory we're in and returnthe fullpath associated with that command
+          free(givenDir);
+          free(rawDir);
+          free(currentpathelement);
           return returnpath;                                  
         }
       }
@@ -375,10 +348,10 @@ char *which(char *command, struct pathelement *pathlist )
     closedir(givenDir);
     currentpath = currentpath->next;
   }
+  free(givenDir);
+  free(rawDir);
+  free(currentpath);
   return(NULL);
-   /* loop through pathlist until finding command and return it.  Return
-   NULL when not found. */
-
 } /* which() */
 
 char *where(char *command, struct pathelement *pathlist )
@@ -409,9 +382,10 @@ char *where(char *command, struct pathelement *pathlist )
   len = (int)strlen(alllocations);
   char *returnlocations = (char*)malloc(len);
   strcpy(returnlocations, alllocations);
+  free(givenDir);
+  free(rawDir);
   return returnlocations;                                      //return all of the locations where command was found
 
-  /* similarly loop through finding all locations of command */
 } /* where() */
 
 void list ( char *dir )
@@ -428,9 +402,9 @@ void list ( char *dir )
     }
   }
   closedir(givenDir);                               //need to close the directory we opened
+  free(givenDir);
+  free(rawDir);
 
-  /* see man page for opendir() and readdir() and print out filenames for
-  the directory passed */
 } /* list() */
 
 void printenv(char **envp, int num_args, char **args){
@@ -445,6 +419,7 @@ void printenv(char **envp, int num_args, char **args){
       if(env_var){
         printf("%s\n", env_var);
       }
+       free(env_var);
     }else{
       printf("Too many arguments");
     }
