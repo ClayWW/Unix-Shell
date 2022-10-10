@@ -308,11 +308,13 @@ int sh( int argc, char **argv, char **envp )
     }
     clearerr(stdin); //ctrl d
   }
+  
   free(environ);
   free(prompt);
   free(commandline);
   free(commandlineinput);
   free(args);
+  
   return 0;
 } /* sh() */
 
@@ -348,9 +350,11 @@ char *which(char *command, struct pathelement *pathlist )
     closedir(givenDir);
     currentpath = currentpath->next;
   }
+  /*
   free(givenDir);
   free(rawDir);
   free(currentpath);
+  */
   return(NULL);
 } /* which() */
 
@@ -382,8 +386,10 @@ char *where(char *command, struct pathelement *pathlist )
   len = (int)strlen(alllocations);
   char *returnlocations = (char*)malloc(len);
   strcpy(returnlocations, alllocations);
+  /*
   free(givenDir);
   free(rawDir);
+  */
   return returnlocations;                                      //return all of the locations where command was found
 
 } /* where() */
@@ -401,9 +407,11 @@ void list ( char *dir )
       printf("%s\n", rawDir->d_name);                       //will print out every entry in the dir
     }
   }
+  /*
   closedir(givenDir);                               //need to close the directory we opened
   free(givenDir);
   free(rawDir);
+  */
 
 } /* list() */
 
@@ -419,7 +427,6 @@ void printenv(char **envp, int num_args, char **args){
       if(env_var){
         printf("%s\n", env_var);
       }
-       free(env_var);
     }else{
       printf("Too many arguments");
     }
