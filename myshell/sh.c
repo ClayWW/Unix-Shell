@@ -282,7 +282,8 @@ int sh( int argc, char **argv, char **envp )
               }
               break;
           }
-        }else if((args[0] != "exit") && (args[0] != "which") && (args[0] != "where") && (args[0] != "cd") && (args[0] != "pwd") && (args[0] != "list") && (args[0] != "kill") && (args[0] != "pid") && (args[0] != "prompt") && (args[0] != "printenv") && (args[0] != "setenv")){
+        }else if((strcmp(args[0], "exit") != 0) && (strcmp(args[0], "which") != 0) && (strcmp(args[0], "where") != 0) && (strcmp(args[0], "cd") != 0) && (strcmp(args[0], "pwd") != 0) && (strcmp(args[0], "kill") != 0) && (strcmp(args[0], "pid") != 0) && (strcmp(args[0], "prompt") != 0) && (strcmp(args[0], "printenv") != 0) && (strcmp(args[0], "setenv") != 0) && (strcmp(args[0], "list") != 0)){
+          printf(args[0]);
           status = 0;
           pid_t pid1;
           if((pid1 = fork()) < 0){
