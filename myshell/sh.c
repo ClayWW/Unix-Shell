@@ -225,6 +225,20 @@ int sh( int argc, char **argv, char **envp )
                     free(prompt);
                     free(olddir);
                     free(commandline);
+                    free(commandlineinput);
+                    i = 0;
+                    while(args[i]){
+                      free(args[i]);
+                      i++;
+                    }
+                     free(args);
+                      struct pathelement *head;
+                      head = pathlist;
+                      free(head->element);
+                      while(head != NULL){
+                        free(head);
+                        head = head->next;
+                      }
                     pathlist = get_path();
                   }
                   if(kill(temp, abs(signal)) == -1){
