@@ -28,7 +28,7 @@ typedef enum commands { //A blessing from God himself
         end_of_list
     } commands;
 
-void ctrlhanlder(int sig){};
+void ctrlhanlder(int sig){}; //in the case of any ctrl + letter inputs, ignores entirely
 
 int sh( int argc, char **argv, char **envp )
 {
@@ -40,7 +40,7 @@ int sh( int argc, char **argv, char **envp )
   char *command, *arg, *commandpath, *p, *pwd, *cwd;
   char **args = calloc(MAXARGS, sizeof(char*));
   int uid, i, status, argsct, go = 1;
-  struct passwd *password_entry;
+  struct passwd *password_entry; //still don't get what this is supposed to do
   char *homedir;
   struct pathelement *pathlist;
   char *olddir;
@@ -67,7 +67,7 @@ int sh( int argc, char **argv, char **envp )
   /* Put PATH into a linked list */
   pathlist = get_path();
   
-  char *commands_strings[] = {
+  char *commands_strings[] = { //all the built in commands
       "exit",
       "which",
       "where",
@@ -83,7 +83,7 @@ int sh( int argc, char **argv, char **envp )
 
   while ( go )
   {
-    printf("\n%s [%s]>", prompt, cwd);
+    printf("\n%s [%s]>", prompt, cwd); //initial user interface
     signal(SIGINT, ctrlhanlder); //ctrl c
     signal(SIGTSTP, ctrlhanlder); //ctrl z
     fgets(commandline, BUFFER_SIZE, stdin);
@@ -103,15 +103,15 @@ int sh( int argc, char **argv, char **envp )
         args[num_args] = (char *) malloc(len); //LEAK
         strcpy(args[num_args], token);
         token = strtok(NULL, " ");
-        num_args++;
+        num_args++; //keep track of how many arguments we have for later
       }
       for(int i = 0; i < end_of_list; i++){ //must be struct? (changed to struct but now I have two?)
         if(strcmp(args[0], commands_strings[i]) == 0){
           switch(i){
-            case EXIT: //done
+            case EXIT: //exits the loop and the shell
               go = 0;
               break;
-            case WHICH: //done
+            case WHICH: //see documentation at declaration
               if(args[1] == NULL){
                 printf("%s", "not enough arguments.\n");
               }else{
@@ -130,7 +130,7 @@ int sh( int argc, char **argv, char **envp )
                 }
               }
               break;
-            case WHERE: //done
+            case WHERE: //see documentation at declaration
               if(args[1] == NULL){
                 printf("%s", "not enough arguments.\n");
               }else{
@@ -153,14 +153,13 @@ int sh( int argc, char **argv, char **envp )
               //args[0] is the cd command
               //args[1] is the directory
               //can't be more than two args
-              //JESUS H CHRIST IT FINALLY WORKS
-              if(args[1] == NULL){
+              if(args[1] == NULL){  //if no arguments, switch to home directory
                 strcpy(olddir, cwd);
                 strcpy(cwd, homedir);
                 chdir(cwd);
               }else if(num_args > 2){
                 printf("Too many arguments\n");
-              }else if(strcmp(args[1],"-") == 0){
+              }else if(strcmp(args[1],"-") == 0){ //have the deal with the - character, simple swap
                 char *temp = cwd;
                 cwd = olddir;
                 olddir = temp;
@@ -168,7 +167,7 @@ int sh( int argc, char **argv, char **envp )
               }else if(args[1] != NULL && args[2] == NULL){
                 if(chdir(args[1]) < 0){
                   perror("Invalid Directory");
-                }else{
+                }else{  //update to new directory but keep track of previous
                   free(olddir);
                   olddir = malloc((int)strlen(commandlineinput));
                   strcpy(olddir, cwd);
@@ -177,10 +176,10 @@ int sh( int argc, char **argv, char **envp )
                   strcpy(cwd, commandlineinput);
                 }
               }
-            case PWD: //done
+            case PWD: //prints the current working directory
               printf("%s\n", cwd);
               break;
-            case LIST: //done
+            case LIST: //see documentation at declaration
               if(num_args == 1){
                 list(cwd);
                 break;
@@ -193,14 +192,14 @@ int sh( int argc, char **argv, char **envp )
                 printf("\n");
               }
               break;
-            case PID: //done i believe
+            case PID: //prints the process id
               int pid = getpid();                                             
               printf("%d\n", pid);
               break;
-            case KILL: //done
+            case KILL: //kills whatever program is targeted, needs at least a process id in order to run, can have a flag/signal too
               if(args[1] == NULL){ //works
                 printf("No argument for target\n");
-              }else if(args[2] == NULL){ //works
+              }else if(args[2] == NULL){ //works, basic case of killing off a process directly
                 int temp = -1;
                 sscanf(args[1], "%d", &temp);
                 if(temp != -1){
@@ -219,7 +218,7 @@ int sh( int argc, char **argv, char **envp )
                 sscanf(args[1], "%d", &signal); //args[1] is the flag/signal
                 if(temp != -1 && signal < 0){ //the signal starts with -(signal) so it's technically a negative int lol
                   if(temp == getpid() && signal == -1){ //killing the whole shell
-                    //gotta free everything
+                    //gotta free everything (do it out of the if statement)
                     pathlist = get_path();
                   }
                   if(kill(temp, abs(signal)) == -1){
@@ -232,8 +231,8 @@ int sh( int argc, char **argv, char **envp )
                 }
               }
               break;
-            case PROMPT:  //done
-              if(num_args == 1){
+            case PROMPT:  //allows the user to put a prompt before their interface
+              if(num_args == 1){ //if no prompt given, we must ask the user
                 printf("Enter Prompt:");
                 if(fgets(pBuffer, BUFFER_SIZE, stdin) != NULL){
                   len = (int)strlen(pBuffer);
@@ -243,25 +242,25 @@ int sh( int argc, char **argv, char **envp )
                   strtok(pBuffer, " "); //in case of multiple words
                   strcpy(prompt, pBuffer);
                 }
-              }else if(num_args == 2){
+              }else if(num_args == 2){ //if prompt is already given, merely implement it
                 strcpy(prompt, args[1]);
               }
               break;
-            case PRINT_ENV: //done I think??
-              printenv(envp, num_args, args);
-              break;
+            case PRINT_ENV: //see documentation at declaration
+              printenv(envp, num_args, args); //will print all environment variables if no variable is given
+              break;  //will print a specific variable if given a name
             case SET_ENV: //also done I think?
-              if(num_args == 1){
+              if(num_args == 1){  //acts like printenv unless given a variable to set
                 printenv(envp, num_args ,args);
               }else if(num_args == 2 && (strcmp(args[1], "PATH") == 0 || strcmp(args[1], "HOME") == 0)){
-                printf("DO NOT SET TO EMPTY\n");
-              }else if(num_args == 2){
+                printf("DO NOT SET TO EMPTY\n"); //these two are a little sensitive
+              }else if(num_args == 2){  //if given a variable and no value, value becomes ""
                 if(setenv(args[1], "", 1) == -1){
                   perror("Error\n");
                 }else{
                 setenv(args[1], "", 1);
                 }
-              }else if(num_args == 3){
+              }else if(num_args == 3){ //if given a variable and a value, set the variable to the value
                 if(setenv(args[1], args[2], 1) == -1){
                   perror("Error\n");
                 }else{
@@ -278,7 +277,7 @@ int sh( int argc, char **argv, char **envp )
               break;
           }
         }else if((strcmp(args[0], "exit") != 0) && (strcmp(args[0], "which") != 0) && (strcmp(args[0], "where") != 0) && (strcmp(args[0], "cd") != 0) && (strcmp(args[0], "pwd") != 0) && (strcmp(args[0], "kill") != 0) && (strcmp(args[0], "pid") != 0) && (strcmp(args[0], "prompt") != 0) && (strcmp(args[0], "printenv") != 0) && (strcmp(args[0], "setenv") != 0) && (strcmp(args[0], "list") != 0)){
-          status = 0;
+          status = 0; //execute the command if it is not a built in
           pid_t pid1;
           if((pid1 = fork()) < 0){
             perror("Error.\n");
@@ -288,7 +287,7 @@ int sh( int argc, char **argv, char **envp )
               execPath = calloc(BUFFER_SIZE, sizeof(char));
               strcpy(execPath, commandlineinput);
             }else{
-              execve(execPath, args, environ);
+              execve(execPath, args, environ); //actual execution
               free(execPath);                
               printf("\nCommand not found.\n");
               break;
@@ -303,7 +302,7 @@ int sh( int argc, char **argv, char **envp )
     }
     clearerr(stdin); //ctrl d
   }
-  
+  //free everything for the good of the country
   free(prompt);
   free(commandline);
   free(commandlineinput);
