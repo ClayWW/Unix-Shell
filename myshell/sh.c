@@ -303,6 +303,7 @@ int sh( int argc, char **argv, char **envp )
             status = 0;
             waitpid(pid1, &status, 0);
           }
+          break;
         }
           /*
           if((commandlineinput[0] == '/') | ((commandlineinput[0] == '.') & (commandlineinput[1] == '/')) | ((commandlineinput[1] == '.') & (commandlineinput[2] == '/'))){
