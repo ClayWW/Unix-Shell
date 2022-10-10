@@ -25,7 +25,6 @@ typedef enum commands { //A blessing from God himself
         PROMPT,
         PRINT_ENV, 
         SET_ENV,
-        EXTERNAL,
         end_of_list
     } commands;
 
@@ -283,7 +282,7 @@ int sh( int argc, char **argv, char **envp )
               }
               break;
             default:
-              printf("1");
+            printf("1");
               status = 0;
               pid_t pid1;
               if((pid1 = fork()) < 0){
